@@ -1,6 +1,89 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background-color: #06102f;
+}
+
 .titleTest {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 4em;
+  font-size: 3em;
   color: magenta;
   text-align: center;
+}
+
+.apiInput {
+  padding: 10px;
+  width: 300px;
+}
+
+.apiButton {
+  padding: 10px;
+  background-color: #1b2240;
+  color: white;
+  border: 1px solid white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #06102f;
+  }
+  &:active {
+    background-color: #1b2240;
+  }
+}
+
+.inputOutputWrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  .input {
+    width: 500px;
+    height: 800px;
+    color: white;
+    background-color: #1b2240;
+  }
+
+  .graphButton,
+  .docsButton {
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    background-color: #1b2240;
+    color: white;
+    border: 1px solid white;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #06102f;
+    }
+    &:active {
+      background-color: #1b2240;
+    }
+  }
+
+  .output {
+    width: 500px;
+    height: 800px;
+    color: white;
+    background-color: #06102f;
+    border: 1px solid white;
+  }
+}
+
+.docsWrapper {
+  position: absolute;
+  right: 190px;
+  width: 500px;
+  height: 800px;
+  padding: 10px;
+  color: #06102f;
+  background-color: white;
+  border: 1px solid white;
+}
+
+.docsContent {
+  display: flex;
 }
