@@ -6,7 +6,7 @@ import { User } from '../../entities/user.interface';
 import { auth, registerWithEmailAndPassword } from '../../firebase/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { passwordSchema } from '../../schemas/yup';
 
 const schema = object().shape({
@@ -35,6 +35,22 @@ function RegisterPage() {
   const [registerError, setErrorRegister] = useState('');
   const navigate = useNavigate();
 
+  const [passwordShown, setPasswordShown] = useState<boolean>(false);
+  const [confirmPasswordShown, setConfirmPasswordShown] =
+    useState<boolean>(false);
+
+  const togglePasswordVisibility = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    setPasswordShown(!passwordShown);
+  };
+
+  const toggleConfirmPasswordVisibility = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    setConfirmPasswordShown(!confirmPasswordShown);
+  };
+
   async function onRegister(data: User) {
     setErrorRegister(
       (await registerWithEmailAndPassword(data.email, data.password)) ?? '',
@@ -52,14 +68,24 @@ function RegisterPage() {
       <input type="email" {...register('email')} id="email" />
       {errors.email && <p>{errors.email.message}</p>}
       <label htmlFor="password">Password:</label>
-      <input type="password" {...register('password')} id="password" />
+      <input
+        type={passwordShown ? 'text' : 'password'}
+        {...register('password')}
+        id="password"
+      />
+      <button onClick={togglePasswordVisibility}>
+        {passwordShown ? 'Hide' : 'Show'} the password
+      </button>
       {errors.password && <p>{errors.password.message}</p>}
       <label htmlFor="confirm-password">Confirm Password:</label>
       <input
-        type="password"
+        type={confirmPasswordShown ? 'text' : 'password'}
         {...register('confirm-password')}
         id="confirm-password"
       />
+      <button onClick={toggleConfirmPasswordVisibility}>
+        {confirmPasswordShown ? 'Hide' : 'Show'} the password
+      </button>
       {errors['confirm-password'] && (
         <p>{errors['confirm-password'].message}</p>
       )}

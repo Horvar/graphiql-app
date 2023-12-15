@@ -1,7 +1,7 @@
 // import styles from './LoginPage.module.scss'
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { object, string } from 'yup';
 import { auth, logInWithEmailAndPassword } from '../../firebase/firebase';
@@ -35,6 +35,14 @@ function LoginPage() {
 
   const navigate = useNavigate();
 
+  const [passwordShown, setPasswordShown] = useState<boolean>(false);
+
+  const togglePasswordVisibility = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    setPasswordShown(!passwordShown);
+  };
+
   async function onLogin(data: User) {
     setLoginError(
       (await logInWithEmailAndPassword(data.email, data.password)) ?? '',
@@ -52,7 +60,14 @@ function LoginPage() {
       <input type="email" {...register('email')} id="email" />
       {errors.email && <p>{errors.email.message}</p>}
       <label htmlFor="password">Password:</label>
-      <input type="password" {...register('password')} id="password" />
+      <input
+        type={passwordShown ? 'text' : 'password'}
+        {...register('password')}
+        id="password"
+      />
+      <button onClick={togglePasswordVisibility}>
+        {passwordShown ? 'Hide' : 'Show'} the password
+      </button>
       {errors.password && <p>{errors.password.message}</p>}
       <input type="submit" value="Login" />
       {errorLogin && <p>{errorLogin}</p>}
