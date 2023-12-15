@@ -8,6 +8,7 @@ import { auth, logInWithEmailAndPassword } from '../../firebase/firebase';
 import { User } from '../../entities/user.interface';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
+import { passwordSchema } from '../../schemas/yup';
 
 const schema = object().shape({
   email: string()
@@ -17,12 +18,7 @@ const schema = object().shape({
       'Enter valid email!',
     )
     .required('Enter email!'),
-  password: string()
-    .matches(
-      /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]).{8,}$/,
-      'Your password are weak!',
-    )
-    .required('Enter password!'),
+  password: passwordSchema,
 });
 
 function LoginPage() {
@@ -47,7 +43,7 @@ function LoginPage() {
 
   useEffect(() => {
     if (loading) return;
-    if (user) navigate('/');
+    if (user) navigate('/graphiql');
   }, [user, loading]);
 
   return (
