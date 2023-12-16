@@ -28,11 +28,13 @@ function Header() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target;
-  
+
       if (target instanceof Element) {
-        const isLanguageDropdownClick = target.closest(`.${styles.headerDropdown}`);
+        const isLanguageDropdownClick = target.closest(
+          `.${styles.headerDropdown}`,
+        );
         const isAuthDropdownClick = target.closest(`.${styles.headerDropdown}`);
-  
+
         if (!isLanguageDropdownClick) {
           setShowLanguageDropdown(false);
         }
@@ -41,11 +43,10 @@ function Header() {
         }
       }
     };
-  
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-  
 
   const handleScroll = () => {
     const offset = window.scrollY;
@@ -104,63 +105,79 @@ function Header() {
           </div>
 
           <div className={styles.headerColRight}>
-            <button
-              type="button"
-              className={styles.headerButton}
-              aria-label="Select Language"
-              onClick={toggleLanguageDropdown}
-            >
-              <svg className={styles.headerButtonIcon}>
-                <use href={`${icons}#language`}></use>
-              </svg>
-            </button>
 
-            {showLanguageDropdown && (
-              <div className={styles.headerDropdown}>язык</div>
-            )}
-
-            <div>
-              {!user && (
-                <>
-                  <button
-                    type="button"
-                    className={styles.headerButton}
-                    aria-label="Login/Register"
-                    onClick={toggleAuthDropdown}
-                  >
-                    <svg className={styles.headerButtonIcon}>
-                      <use href={`${icons}#account`}></use>
-                    </svg>
-                  </button>
-
-                  {showAuthDropdown && (
-                    <div className={styles.headerDropdown}>
-                      <button type="button" onClick={() => navigate('/login')}>
-                        Sign In
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => navigate('/register')}
-                      >
-                        Sign Up
-                      </button>
-                    </div>
-                  )}
-                </>
-              )}
-              {user && (
-                <button
-                  type="button"
-                  className={styles.headerButton}
-                  aria-label="Exit Account"
-                  onClick={handleLogout}
-                >
-                  <svg className={styles.headerButtonIcon}>
-                    <use href={`${icons}#exit`}></use>
-                  </svg>
-                </button>
+            <div className={styles.headerDropdownWrapper}>
+              <button
+                type="button"
+                className={`${styles.headerButton} ${showLanguageDropdown ? styles.active : ''}`}
+                aria-label="Select Language"
+                onClick={toggleLanguageDropdown}
+              >
+                <svg className={styles.headerButtonIcon}>
+                  <use href={`${icons}#language`}></use>
+                </svg>
+              </button>
+              {showLanguageDropdown && (
+                <div className={styles.headerDropdown}>
+                  <ul className={styles.headerDropdownList}>
+                    <li className={styles.headerDropdownItem}>
+                      <button type="button" className={styles.headerButtonText}>Russian</button>
+                    </li>
+                    <li className={styles.headerDropdownItem}>
+                      <button type="button" className={styles.headerButtonText}>English</button>
+                    </li>
+                  </ul>
+                </div>
               )}
             </div>
+
+            {!user && (
+              <div className={styles.headerDropdownWrapper}>
+                <button
+                  type="button"
+                  className={`${styles.headerButton} ${showAuthDropdown ? styles.active : ''}`}
+                  aria-label="Login/Register"
+                  onClick={toggleAuthDropdown}
+                >
+                  <svg className={styles.headerButtonIcon}>
+                    <use href={`${icons}#account`}></use>
+                  </svg>
+                </button>
+
+                {showAuthDropdown && (
+                  <div className={styles.headerDropdown}>
+                    <ul className={styles.headerDropdownList}>
+                      <li className={styles.headerDropdownItem}>
+                        <button type="button" className={styles.headerButtonText} onClick={() => navigate('/login')}>
+                          Sign In
+                        </button>
+                      </li>
+                      <li className={styles.headerDropdownItem}>
+                        <button
+                          type="button"
+                          className={styles.headerButtonText}
+                          onClick={() => navigate('/register')}
+                        >
+                          Sign Up
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+            {user && (
+              <button
+                type="button"
+                className={styles.headerButton}
+                aria-label="Exit Account"
+                onClick={handleLogout}
+              >
+                <svg className={styles.headerButtonIcon}>
+                  <use href={`${icons}#exit`}></use>
+                </svg>
+              </button>
+            )}
           </div>
         </div>
       </header>

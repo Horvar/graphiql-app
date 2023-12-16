@@ -59,28 +59,44 @@
 }
 
 .headerButtonLink,
-.headerButton {
-  height: 48px;
-
+.headerButton,
+.headerButtonText {
   background: transparent;
   border: none;
+
+  color: $colorPrimary1;
+
+  cursor: pointer;
+
+  transition: 0.1s;
+}
+
+.headerButtonLink,
+.headerButton {
+  height: 48px;
 
   padding: 0;
   margin: 0;
 
   background: transparentize($colorPrimary1, 0.9);
-  color: $colorPrimary1;
 
   border-radius: 8px;
 
-  cursor: pointer;
-
-  &:hover {
+  &:hover,
+  &.active {
     background: transparentize($colorPrimary2, 0.9);
 
     color: $colorPrimary2;
+  }
+}
 
-    transition: 0.1s;
+.headerButtonText {
+  font-size: 16px;
+
+  padding: 8px 0;
+
+  &:hover {
+    color: $colorPrimary2;
   }
 }
 
@@ -92,6 +108,10 @@
 
 .headerButton {
   width: 48px;
+
+  &.active {
+    pointer-events: none;
+  }
 }
 
 .headerButtonIcon {
@@ -101,13 +121,58 @@
   color: inherit;
 }
 
+.headerDropdownWrapper {
+  position: relative;
+
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+}
+
 .headerDropdown {
   position: absolute;
   bottom: 0;
   left: 50%;
+  transform: translate(-50%);
+}
 
-  width: 100px;
-  background: magenta;
+.headerDropdownList {
+  width: 120px;
+
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%);
+
+  margin: 0;
+  padding: 16px 0;
+
+  border-radius: 0 0 8px 8px;
+
+  background: transparentize($colorBg2, 0.5);
+
+  list-style: none;
+}
+
+.headerDropdownItem {
+  display: flex;
+  flex-direction: column;
+
+  color: $colorPrimary1;
+
+  position: relative;
+
+  &:not(:last-child)::after {
+    content: '';
+
+    width: 75%;
+    height: 1px;
+
+    margin: 8px auto;
+
+    background: transparentize($colorWhite, .9);
+  }
 }
 
 @keyframes headerShow {
