@@ -61,7 +61,7 @@ function GraphiQLPage() {
           className={styles.apiInput}
           type="text"
           value={api}
-          placeholder="https://graphqlzero.almansi.me/api"
+          placeholder="https://rickandmortyapi.com/graphql"
           onChange={handlerChangeApi}
         />
       </div>
