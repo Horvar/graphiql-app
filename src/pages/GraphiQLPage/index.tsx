@@ -4,16 +4,7 @@ import styles from './GraphiQLPage.module.scss';
 import { Docs } from './docs/docs';
 
 function GraphiQLPage() {
-  const url = 'https://graphqlzero.almansi.me/api';
-  const [api, setApi] = useState('');
-  console.log(api);
-
-  const [isDocsOpen, setIsDocsOpen] = useState(false);
-  const [variables, setVariables] = useState('');
-  const [headers, setHeaders] = useState('');
-  const [output, setOutput] = useState('');
-
-  const [input, setInput] = useState(`query Query {
+  const playgroundPlaceholder = `query Query {
     characters(page: 2, filter: {name: "Morty"}) {
       info {
         count
@@ -28,12 +19,20 @@ function GraphiQLPage() {
     episodesByIds(ids: [1, 2]) {
       id
     }
-  }`);
+  }`;
+  const [api, setApi] = useState('');
+
+  const [isDocsOpen, setIsDocsOpen] = useState(false);
+  const [variables, setVariables] = useState('');
+  const [headers, setHeaders] = useState('');
+  const [output, setOutput] = useState('');
+
+  const [input, setInput] = useState(``);
 
   const makeRequest = (query: string, variables: string, headers: string) => {
     const variablesJson = variables ? JSON.parse(variables) : {};
     const headersJson = headers ? JSON.parse(headers) : {};
-    return fetch(url, {
+    return fetch(api, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...headersJson },
       body: JSON.stringify({ query, variables: variablesJson }),
@@ -50,7 +49,6 @@ function GraphiQLPage() {
 
   const onHandlerQuery = () => {
     makeRequest(input, variables, headers);
-    console.log(variables);
   };
 
   const handlerChangeApi = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,6 +64,7 @@ function GraphiQLPage() {
           className={styles.apiInput}
           type="text"
           value={api}
+          placeholder="https://graphqlzero.almansi.me/api"
           onChange={handlerChangeApi}
         />
       </div>
@@ -79,6 +78,7 @@ function GraphiQLPage() {
             cols={20}
             rows={10}
             value={input}
+            placeholder={playgroundPlaceholder}
             onChange={(event) => {
               setInput(event.target.value);
             }}
@@ -112,7 +112,7 @@ function GraphiQLPage() {
         >
           Docs
         </button>
-        <Docs isDocsOpen={isDocsOpen} url={url} />
+        <Docs isDocsOpen={isDocsOpen} url={api} />
       </div>
     </div>
   );
