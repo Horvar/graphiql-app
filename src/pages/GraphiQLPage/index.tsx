@@ -4,9 +4,14 @@ import styles from './GraphiQLPage.module.scss';
 import { Docs } from './docs/docs';
 
 function GraphiQLPage() {
-  const [api, setApi] = useState('https://rickandmortyapi.com/graphql');
+  const url = 'https://graphqlzero.almansi.me/api';
+  const [api, setApi] = useState('');
+  console.log(api);
+
   const [isDocsOpen, setIsDocsOpen] = useState(false);
-  const url = 'https://rickandmortyapi.com/graphql';
+  const [variables, setVariables] = useState('');
+  const [headers, setHeaders] = useState('');
+  const [output, setOutput] = useState('');
 
   const [input, setInput] = useState(`query Query {
     characters(page: 2, filter: {name: "Morty"}) {
@@ -24,23 +29,31 @@ function GraphiQLPage() {
       id
     }
   }`);
-  const [output, setOutput] = useState([]);
 
-  const makeRequest = (query: any) => {
+  const makeRequest = (query: string, variables: string, headers: string) => {
+    const variablesJson = variables ? JSON.parse(variables) : {};
+    const headersJson = headers ? JSON.parse(headers) : {};
     return fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query }),
-    }).then((response) => response.json());
+      headers: { 'Content-Type': 'application/json', ...headersJson },
+      body: JSON.stringify({ query, variables: variablesJson }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setOutput(JSON.stringify(data, null, 2));
+      })
+      .catch((error) => {
+        console.error('Ошибка запроса:', error);
+        setOutput(`Ошибка: ${error}`);
+      });
   };
 
   const onHandlerQuery = () => {
-    makeRequest(input).then((result) =>
-      setOutput(result.data.characters.results),
-    );
+    makeRequest(input, variables, headers);
+    console.log(variables);
   };
 
-  const handlerChangeApi = (event: any) => {
+  const handlerChangeApi = (event: React.ChangeEvent<HTMLInputElement>) => {
     setApi(event.target.value);
   };
 
@@ -53,40 +66,46 @@ function GraphiQLPage() {
           className={styles.apiInput}
           type="text"
           value={api}
-          onChange={() => {
-            handlerChangeApi;
-          }}
+          onChange={handlerChangeApi}
         />
-        <button
-          className={styles.apiButton}
-          onClick={() => {
-            console.log(api);
-          }}
-        >
-          Submit
-        </button>
       </div>
 
       <div className={styles.inputOutputWrapper}>
-        <textarea
-          className={styles.input}
-          name=""
-          id=""
-          cols="30"
-          rows="10"
-          value={input}
-          onChange={(event) => {
-            setInput(event.target.value);
-          }}
-        />
+        <div className={styles.textareaWrapper}>
+          <textarea
+            className={styles.input}
+            name=""
+            id=""
+            cols={20}
+            rows={10}
+            value={input}
+            onChange={(event) => {
+              setInput(event.target.value);
+            }}
+          />
+          <div className={styles.textareaVariablesAndHeader}>
+            <textarea
+              className={styles.variablesInput}
+              cols={5}
+              rows={10}
+              placeholder="QUERY VARIABLES"
+              value={variables}
+              onChange={(event) => setVariables(event.target.value)}
+            />
+            <textarea
+              className={styles.headersInput}
+              cols={5}
+              rows={10}
+              placeholder="HTTP HEADERS"
+              value={headers}
+              onChange={(event) => setHeaders(event.target.value)}
+            />
+          </div>
+        </div>
         <button className={styles.graphButton} onClick={onHandlerQuery}>
           {'>'}
         </button>
-        <div className={styles.output}>
-          {output.map((item, index) => (
-            <div key={index}>{item.name}</div>
-          ))}
-        </div>
+        <pre className={styles.output}>{output}</pre>
         <button
           className={styles.docsButton}
           onClick={() => setIsDocsOpen(!isDocsOpen)}

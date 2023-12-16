@@ -4,6 +4,8 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
+  padding: 40px;
+  min-height: 100vh;
   background-color: #06102f;
 }
 
@@ -41,10 +43,19 @@
 
   .input {
     width: 500px;
-    height: 800px;
+    height: 400px;
     padding: 10px;
     color: white;
     background-color: #1b2240;
+  }
+
+  .output {
+    width: 500px;
+    margin: 0;
+    padding: 10px;
+    color: white;
+    background-color: #1b2240;
+    border: 1px solid gray;
   }
 
   .graphButton,
@@ -64,13 +75,20 @@
       background-color: #1b2240;
     }
   }
+}
 
-  .output {
-    width: 500px;
-    height: 800px;
-    padding: 10px;
-    color: white;
-    background-color: #1b2240;
-    border: 1px solid gray;
-  }
+.variablesInput {
+  width: 240px;
+  height: 100px;
+  padding: 10px;
+  color: white;
+  background-color: #1b2240;
+}
+
+.headersInput {
+  width: 240px;
+  height: 100px;
+  padding: 10px;
+  color: white;
+  background-color: #1b2240;
 }
