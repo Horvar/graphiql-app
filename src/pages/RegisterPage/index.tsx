@@ -45,7 +45,9 @@ function RegisterPage() {
     setPasswordShown(!passwordShown);
   };
 
-  const toggleConfirmPasswordVisibility = (e: MouseEvent<HTMLButtonElement>) => {
+  const toggleConfirmPasswordVisibility = (
+    e: MouseEvent<HTMLButtonElement>,
+  ) => {
     e.preventDefault();
 
     setConfirmPasswordShown(!confirmPasswordShown);

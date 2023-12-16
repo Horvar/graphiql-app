@@ -4,6 +4,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase/firebase';
 
+import Header from '../../components/Header';
+
 function HomePage() {
   const navigate = useNavigate();
   const [user, loading] = useAuthState(auth);
@@ -14,6 +16,7 @@ function HomePage() {
 
   return (
     <>
+      <Header />
       <div>
         {!user && (
           <>

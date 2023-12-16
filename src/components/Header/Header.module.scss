@@ -1,0 +1,114 @@
+@import '../../variables.scss';
+
+.header {
+  display: flex;
+
+  height: 72px;
+  background: $colorBg2;
+
+  @media (max-width: $resM) {
+    height: 48px;
+  }
+}
+
+.headerFixed {
+  width: 100%;
+
+  position: fixed;
+  top: 0;
+
+  height: 48px;
+
+  animation: headerShow 0.5s ease forwards;
+
+  .headerButtonLink,
+  .headerButton {
+    border-radius: 0;
+  }
+}
+
+.headerHiding {
+  animation: headerHide 0.1s ease;
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+}
+
+.headerColLeft,
+.headerColCenter,
+.headerColRight {
+  flex: 0 0 calc(100% / 3);
+  display: flex;
+  gap: 16px;
+}
+
+.headerColLeft {
+}
+
+.headerColCenter {
+  justify-content: center;
+}
+
+.headerColRight {
+  justify-content: flex-end;
+}
+
+.headerButtonLink,
+.headerButton {
+  height: 48px;
+
+  background: transparent;
+  border: none;
+
+  padding: 0;
+  margin: 0;
+
+  background: transparentize($colorPrimary1, 0.9);
+  color: $colorPrimary1;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  &:hover {
+    background: transparentize($colorPrimary2, 0.9);
+
+    color: $colorPrimary2;
+
+    transition: 0.1s;
+  }
+}
+
+.headerButtonLink {
+  padding: 0 16px;
+
+  font-size: 24px;
+}
+
+.headerButton {
+  width: 48px;
+}
+
+.headerButtonIcon {
+  width: 40px;
+  height: 40px;
+
+  color: inherit;
+}
+
+@keyframes headerShow {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes headerHide {
+  100% {
+    transform: translateY(-100%);
+  }
+}
