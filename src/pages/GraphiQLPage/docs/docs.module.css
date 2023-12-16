@@ -1,0 +1,18 @@
+.docsWrapper {
+  position: absolute;
+  right: 190px;
+  width: 500px;
+  height: 800px;
+  padding: 10px;
+  color: #06102f;
+  background-color: white;
+  border: 1px solid white;
+}
+
+.docsContent {
+  display: flex;
+}
+
+.docsWrapperClose {
+  display: none;
+}
