@@ -5,7 +5,7 @@ import icons from '../../assets/icons/sprite.svg';
 import { useState, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../../firebase/firebase';
+import { auth, logout } from '../../firebase/firebase';
 
 function Header() {
   const navigate = useNavigate();
@@ -13,6 +13,11 @@ function Header() {
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [animate, setAnimate] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   const handleScroll = () => {
     const offset = window.scrollY;
@@ -97,7 +102,7 @@ function Header() {
                   type="button"
                   className={styles.headerButton}
                   aria-label="Exit Account"
-                  onClick={() => navigate('/')}
+                  onClick={handleLogout}
                 >
                   <svg className={styles.headerButtonIcon}>
                     <use href={`${icons}#exit`}></use>
