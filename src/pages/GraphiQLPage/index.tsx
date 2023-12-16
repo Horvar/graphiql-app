@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
-import { IntrospectionQuery } from 'graphql';
+
 import styles from './GraphiQLPage.module.scss';
+import { Docs } from './docs/docs';
 
 function GraphiQLPage() {
   const [api, setApi] = useState('https://rickandmortyapi.com/graphql');
+  const [isDocsOpen, setIsDocsOpen] = useState(false);
+  const url = 'https://rickandmortyapi.com/graphql';
+
   const [input, setInput] = useState(`query Query {
     characters(page: 2, filter: {name: "Morty"}) {
       info {
@@ -23,10 +26,6 @@ function GraphiQLPage() {
   }`);
   const [output, setOutput] = useState([]);
 
-  const [schema, setSchema] = useState<IntrospectionQuery[]>([]);
-
-  const url = 'https://rickandmortyapi.com/graphql';
-
   const makeRequest = (query: any) => {
     return fetch(url, {
       method: 'POST',
@@ -36,70 +35,9 @@ function GraphiQLPage() {
   };
 
   const onHandlerQuery = () => {
-    makeRequest(input).then(
-      // (result) => console.log('result', result.data.characters.results),
-      (result) => setOutput(result.data.characters.results),
+    makeRequest(input).then((result) =>
+      setOutput(result.data.characters.results),
     );
-  };
-
-  const [open, setOpen] = useState(false);
-
-  const onOpenDocs = () => {
-    const client = new ApolloClient({
-      uri: url, // Замените на URL вашего GraphQL-сервера
-      cache: new InMemoryCache(),
-    });
-
-    client
-      .query({
-        query: gql`
-          query GetSchema {
-            __schema {
-              types {
-                name
-                kind
-                description
-                fields {
-                  name
-                  description
-                  type {
-                    name
-                    kind
-                  }
-                }
-              }
-            }
-          }
-        `,
-      })
-      .then((result) => {
-        const schema = result.data.__schema;
-
-        const schemaResult = [];
-        schema.types.forEach((type) => {
-          console.log(`Тип: ${type.name}, Kind: ${type.kind}`);
-          if (type.fields) {
-            console.log('Поля:');
-            type.fields.forEach((field) => {
-              console.log(
-                `  Имя поля: ${field.name}, Описание: ${
-                  field.description || 'Нет описания'
-                }, Тип: ${field.type.name}`,
-              );
-              schemaResult.push({
-                name: field.name,
-                description: field.description || 'Нет описания',
-                type: field.type.name,
-              });
-            });
-          }
-        });
-        setSchema(schemaResult);
-      })
-      .catch((error) => {
-        console.error('Ошибка при получении схемы:', error);
-      });
-    setOpen(!open);
   };
 
   const handlerChangeApi = (event: any) => {
@@ -149,21 +87,13 @@ function GraphiQLPage() {
             <div key={index}>{item.name}</div>
           ))}
         </div>
-        <button className={styles.docsButton} onClick={onOpenDocs}>
+        <button
+          className={styles.docsButton}
+          onClick={() => setIsDocsOpen(!isDocsOpen)}
+        >
           Docs
         </button>
-        <div
-          className={styles.docsWrapper}
-          style={{ display: `${open ? 'block' : 'none'}` }}
-        >
-          {schema.map((item) => (
-            <div className={styles.docsContent} key={item.Name}>
-              <p>{item.name}</p>
-              <p> - {item.description}</p>
-              <p> - {item.type}</p>
-            </div>
-          ))}
-        </div>
+        <Docs isDocsOpen={isDocsOpen} url={url} />
       </div>
     </div>
   );

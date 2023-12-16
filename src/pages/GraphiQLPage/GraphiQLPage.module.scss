@@ -42,6 +42,7 @@
   .input {
     width: 500px;
     height: 800px;
+    padding: 10px;
     color: white;
     background-color: #1b2240;
   }
@@ -67,23 +68,9 @@
   .output {
     width: 500px;
     height: 800px;
+    padding: 10px;
     color: white;
-    background-color: #06102f;
-    border: 1px solid white;
+    background-color: #1b2240;
+    border: 1px solid gray;
   }
-}
-
-.docsWrapper {
-  position: absolute;
-  right: 190px;
-  width: 500px;
-  height: 800px;
-  padding: 10px;
-  color: #06102f;
-  background-color: white;
-  border: 1px solid white;
-}
-
-.docsContent {
-  display: flex;
 }
