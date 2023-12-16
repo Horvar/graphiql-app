@@ -89,12 +89,22 @@ function Header() {
             <div>
               {!user && (
                 <>
-                  <button type="button" onClick={() => navigate('/login')}>
+                  <button
+                    type="button"
+                    className={styles.headerButton}
+                    aria-label="Login/Register"
+                  >
+                    <svg className={styles.headerButtonIcon}>
+                      <use href={`${icons}#account`}></use>
+                    </svg>
+                  </button>
+
+                  {/* <button type="button" onClick={() => navigate('/login')}>
                     Sign In
                   </button>
                   <button type="button" onClick={() => navigate('/register')}>
                     Sign Up
-                  </button>
+                  </button> */}
                 </>
               )}
               {user && (
