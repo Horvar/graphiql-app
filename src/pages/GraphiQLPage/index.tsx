@@ -1,8 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {useAuthState} from 'react-firebase-hooks/auth'
+import { auth } from '../../firebase/firebase';
+import { useNavigate } from 'react-router-dom';
 import { Docs } from './docs/docs';
 import styles from './GraphiQLPage.module.scss';
 
 function GraphiQLPage() {
+  const [user, loading] = useAuthState(auth);
+  const navigate = useNavigate();
   const [api, setApi] = useState('');
   const [input, setInput] = useState(``);
   const [variables, setVariables] = useState('');
@@ -51,6 +56,11 @@ function GraphiQLPage() {
   const handlerChangeApi = (event: React.ChangeEvent<HTMLInputElement>) => {
     setApi(event.target.value);
   };
+
+  useEffect(() => {
+    if (loading) return;
+    if (user) navigate('/login')
+  })
 
   return (
     <div className={styles.wrapper}>
