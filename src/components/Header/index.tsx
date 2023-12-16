@@ -14,10 +14,38 @@ function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [animate, setAnimate] = useState(false);
 
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const [showAuthDropdown, setShowAuthDropdown] = useState(false);
+
+  const toggleLanguageDropdown = () => setShowLanguageDropdown((prev) => !prev);
+  const toggleAuthDropdown = () => setShowAuthDropdown((prev) => !prev);
+
   const handleLogout = () => {
     logout();
     navigate('/');
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target;
+  
+      if (target instanceof Element) {
+        const isLanguageDropdownClick = target.closest(`.${styles.headerDropdown}`);
+        const isAuthDropdownClick = target.closest(`.${styles.headerDropdown}`);
+  
+        if (!isLanguageDropdownClick) {
+          setShowLanguageDropdown(false);
+        }
+        if (!isAuthDropdownClick) {
+          setShowAuthDropdown(false);
+        }
+      }
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+  
 
   const handleScroll = () => {
     const offset = window.scrollY;
@@ -80,11 +108,16 @@ function Header() {
               type="button"
               className={styles.headerButton}
               aria-label="Select Language"
+              onClick={toggleLanguageDropdown}
             >
               <svg className={styles.headerButtonIcon}>
                 <use href={`${icons}#language`}></use>
               </svg>
             </button>
+
+            {showLanguageDropdown && (
+              <div className={styles.headerDropdown}>язык</div>
+            )}
 
             <div>
               {!user && (
@@ -93,18 +126,26 @@ function Header() {
                     type="button"
                     className={styles.headerButton}
                     aria-label="Login/Register"
+                    onClick={toggleAuthDropdown}
                   >
                     <svg className={styles.headerButtonIcon}>
                       <use href={`${icons}#account`}></use>
                     </svg>
                   </button>
 
-                  {/* <button type="button" onClick={() => navigate('/login')}>
-                    Sign In
-                  </button>
-                  <button type="button" onClick={() => navigate('/register')}>
-                    Sign Up
-                  </button> */}
+                  {showAuthDropdown && (
+                    <div className={styles.headerDropdown}>
+                      <button type="button" onClick={() => navigate('/login')}>
+                        Sign In
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => navigate('/register')}
+                      >
+                        Sign Up
+                      </button>
+                    </div>
+                  )}
                 </>
               )}
               {user && (

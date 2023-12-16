@@ -33,15 +33,18 @@
 
 .headerContainer {
   display: flex;
-  align-items: center;
 }
 
 .headerColLeft,
 .headerColCenter,
 .headerColRight {
   flex: 0 0 calc(100% / 3);
+
   display: flex;
+  align-items: center;
   gap: 16px;
+
+  position: relative;
 }
 
 .headerColLeft {
@@ -96,6 +99,15 @@
   height: 40px;
 
   color: inherit;
+}
+
+.headerDropdown {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+
+  width: 100px;
+  background: magenta;
 }
 
 @keyframes headerShow {
