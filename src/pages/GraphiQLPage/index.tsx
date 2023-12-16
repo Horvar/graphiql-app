@@ -1,15 +1,14 @@
 import { useState } from 'react';
-
-import styles from './GraphiQLPage.module.scss';
 import { Docs } from './docs/docs';
+import styles from './GraphiQLPage.module.scss';
 
 function GraphiQLPage() {
   const [api, setApi] = useState('');
-  const [isDocsOpen, setIsDocsOpen] = useState(false);
+  const [input, setInput] = useState(``);
   const [variables, setVariables] = useState('');
   const [headers, setHeaders] = useState('');
   const [output, setOutput] = useState('');
-  const [input, setInput] = useState(``);
+  const [isDocsOpen, setIsDocsOpen] = useState(false);
   const playgroundPlaceholder = `query Query {
     characters(page: 2, filter: {name: "Morty"}) {
       info {
