@@ -4,6 +4,12 @@ import styles from './GraphiQLPage.module.scss';
 import { Docs } from './docs/docs';
 
 function GraphiQLPage() {
+  const [api, setApi] = useState('');
+  const [isDocsOpen, setIsDocsOpen] = useState(false);
+  const [variables, setVariables] = useState('');
+  const [headers, setHeaders] = useState('');
+  const [output, setOutput] = useState('');
+  const [input, setInput] = useState(``);
   const playgroundPlaceholder = `query Query {
     characters(page: 2, filter: {name: "Morty"}) {
       info {
@@ -20,14 +26,6 @@ function GraphiQLPage() {
       id
     }
   }`;
-  const [api, setApi] = useState('');
-
-  const [isDocsOpen, setIsDocsOpen] = useState(false);
-  const [variables, setVariables] = useState('');
-  const [headers, setHeaders] = useState('');
-  const [output, setOutput] = useState('');
-
-  const [input, setInput] = useState(``);
 
   const makeRequest = (query: string, variables: string, headers: string) => {
     const variablesJson = variables ? JSON.parse(variables) : {};
