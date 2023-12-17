@@ -59,8 +59,8 @@ function GraphiQLPage() {
 
   useEffect(() => {
     if (loading) return;
-    if (!user) navigate('/login');
-  }, [user, loading]);
+    if (!user) navigate('/login')
+  }, [user, loading])
 
   return (
     <div className={styles.wrapper}>
