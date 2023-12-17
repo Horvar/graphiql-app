@@ -41,6 +41,7 @@
 
 .headerContainer {
   display: flex;
+  justify-content: space-between;
 }
 
 .headerColLeft,
@@ -121,9 +122,30 @@
 }
 
 .headerButtonLink {
-  padding: 0 16px;
+  display: flex;
+  gap: 8px;
+
+  padding: 0 16px 0 8px;
+
+  color: $colorPrimary3;
+  background: transparentize($colorPrimary3, .9);
 
   font-size: 24px;
+
+  @media (max-width: $resM) {
+    font-size: 16px;
+  }
+
+  @media (max-width: $resS) {
+    width: 40px;
+    padding: 0;
+  }
+
+  span {
+    @media (max-width: $resS) {
+      display: none;
+    }
+  }
 }
 
 .headerButton {

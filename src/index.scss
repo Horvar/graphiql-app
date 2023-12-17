@@ -27,6 +27,8 @@ body {
 button {
   font: inherit;
 
+  white-space: nowrap;
+
   display: flex;
   align-items: center;
   justify-content: center;

@@ -113,16 +113,17 @@ function Header() {
               <use href={`${icons}#home`}></use>
             </svg>
           </button>
-        </div>
 
-        <div className={styles.headerColCenter}>
           {user && (
             <button
               type="button"
               className={styles.headerButtonLink}
               onClick={() => navigate('/graphiql')}
             >
-              Go to GraphiQL!
+              <svg className={styles.headerButtonIcon}>
+                <use href={`${icons}#graphiql`}></use>
+              </svg>
+              <span>Go to GraphiQL!</span>
             </button>
           )}
         </div>
