@@ -59,7 +59,7 @@ function GraphiQLPage() {
 
   useEffect(() => {
     if (loading) return;
-    if (user) navigate('/login')
+    if (!user) navigate('/login')
   }, [user, loading])
 
   return (
