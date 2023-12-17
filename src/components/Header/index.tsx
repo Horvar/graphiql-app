@@ -13,7 +13,6 @@ function Header() {
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [animate, setAnimate] = useState(false);
 
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showAuthDropdown, setShowAuthDropdown] = useState(false);
@@ -51,40 +50,17 @@ function Header() {
 
   const handleScroll = () => {
     const offset = window.scrollY;
-
-    if (window.innerWidth > 540) {
-      setIsMobile(false);
-
-      if (offset > 300) {
-        setIsScrolled(true);
-        setAnimate(false);
-      } else if (isScrolled && !animate) {
-        setAnimate(true);
-        setTimeout(() => {
-          setIsScrolled(false);
-          setAnimate(false);
-        }, 100);
-      }
-    } else {
-      setIsMobile(true);
-    }
+    setIsScrolled(offset > 10);
+    setIsMobile(window.innerWidth <= 540);
   };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isScrolled, animate]);
-
-  useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth <= 540);
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
     };
-
-    checkIfMobile();
-
-    window.addEventListener('resize', checkIfMobile);
-
-    return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
   if (loading) {
@@ -99,7 +75,7 @@ function Header() {
     <header
       className={`${styles.header} ${
         isScrolled || isMobile ? styles.headerFixed : ''
-      } ${animate ? styles.headerHiding : ''}`}
+      }`}
     >
       <div className={`${styles.headerContainer} container`}>
         <div className={styles.headerColLeft}>
