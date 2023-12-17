@@ -9,6 +9,10 @@
   @media (max-width: $resM) {
     height: 48px;
   }
+
+  @media (max-width: $resS) {
+    height: 40px;
+  }
 }
 
 .headerFixed {
@@ -20,6 +24,10 @@
   height: 48px;
 
   animation: headerShow 0.5s ease forwards;
+
+  @media (max-width: $resS) {
+    height: 40px;
+  }
 
   .headerButtonLink,
   .headerButton {
@@ -45,6 +53,12 @@
   gap: 16px;
 
   position: relative;
+
+  @media (max-width: $resM) {
+    gap: 8px;
+
+    position: relative;
+  }
 }
 
 .headerColLeft {
@@ -82,6 +96,10 @@
 
   border-radius: 8px;
 
+  @media (max-width: $resM) {
+    height: 40px;
+  }
+
   &:hover,
   &.active {
     background: transparentize($colorPrimary2, 0.9);
@@ -94,6 +112,11 @@
   font-size: 16px;
 
   padding: 8px 0;
+
+  @media (max-width: $resM) {
+    font-size: 14px;
+    padding: 4px 0;
+  }
 
   &:hover {
     color: $colorPrimary2;
@@ -109,6 +132,10 @@
 .headerButton {
   width: 48px;
 
+  @media (max-width: $resM) {
+    width: 40px;
+  }
+
   &.active {
     pointer-events: none;
   }
@@ -119,6 +146,11 @@
   height: 40px;
 
   color: inherit;
+
+  @media (max-width: $resM) {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 .headerDropdownWrapper {
@@ -128,6 +160,10 @@
 
   display: flex;
   align-items: center;
+
+  @media (max-width: $resM) {
+    position: static;
+  }
 }
 
 .headerDropdown {
@@ -135,6 +171,11 @@
   bottom: 0;
   left: 50%;
   transform: translate(-50%);
+
+  @media (max-width: $resM) {
+    position: static;
+    transform: none;
+  }
 }
 
 .headerDropdownList {
@@ -153,6 +194,16 @@
   background: transparentize($colorBg2, 0.5);
 
   list-style: none;
+
+  @media (max-width: $resM) {
+    width: 88px;
+
+    left: auto;
+    top: auto;
+    bottom: 0;
+    right: 0;
+    transform: translate(0, 100%);
+  }
 }
 
 .headerDropdownItem {
@@ -171,7 +222,7 @@
 
     margin: 8px auto;
 
-    background: transparentize($colorWhite, .9);
+    background: transparentize($colorWhite, 0.9);
   }
 }
 

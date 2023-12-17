@@ -12,6 +12,7 @@ function Header() {
   const [user, loading] = useAuthState(auth);
 
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [animate, setAnimate] = useState(false);
 
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
@@ -50,16 +51,24 @@ function Header() {
 
   const handleScroll = () => {
     const offset = window.scrollY;
-    if (offset > 300) {
-      setIsScrolled(true);
-      setAnimate(false);
-    } else if (isScrolled && !animate) {
-      setAnimate(true);
-      setTimeout(() => {
-        setIsScrolled(false);
+    
+    if (window.innerWidth > 540) {
+      setIsMobile(false);
+
+      if (offset > 300) {
+        setIsScrolled(true);
         setAnimate(false);
-      }, 100);
+      } else if (isScrolled && !animate) {
+        setAnimate(true);
+        setTimeout(() => {
+          setIsScrolled(false);
+          setAnimate(false);
+        }, 100);
+      }
+    } else {
+      setIsMobile(true);
     }
+
   };
 
   useEffect(() => {
@@ -67,14 +76,30 @@ function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isScrolled, animate]);
 
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 540);
+    };
+  
+    checkIfMobile();
+  
+    window.addEventListener('resize', checkIfMobile);
+  
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
+
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <div>Loading...</div>
+      </>
+    );
   }
 
   return (
     <>
       <header
-        className={`${styles.header} ${isScrolled ? styles.headerFixed : ''} ${
+        className={`${styles.header} ${isScrolled || isMobile ? styles.headerFixed : ''} ${
           animate ? styles.headerHiding : ''
         }`}
       >
@@ -105,11 +130,12 @@ function Header() {
           </div>
 
           <div className={styles.headerColRight}>
-
             <div className={styles.headerDropdownWrapper}>
               <button
                 type="button"
-                className={`${styles.headerButton} ${showLanguageDropdown ? styles.active : ''}`}
+                className={`${styles.headerButton} ${
+                  showLanguageDropdown ? styles.active : ''
+                }`}
                 aria-label="Select Language"
                 onClick={toggleLanguageDropdown}
               >
@@ -121,10 +147,14 @@ function Header() {
                 <div className={styles.headerDropdown}>
                   <ul className={styles.headerDropdownList}>
                     <li className={styles.headerDropdownItem}>
-                      <button type="button" className={styles.headerButtonText}>Russian</button>
+                      <button type="button" className={styles.headerButtonText}>
+                        Russian
+                      </button>
                     </li>
                     <li className={styles.headerDropdownItem}>
-                      <button type="button" className={styles.headerButtonText}>English</button>
+                      <button type="button" className={styles.headerButtonText}>
+                        English
+                      </button>
                     </li>
                   </ul>
                 </div>
@@ -135,7 +165,9 @@ function Header() {
               <div className={styles.headerDropdownWrapper}>
                 <button
                   type="button"
-                  className={`${styles.headerButton} ${showAuthDropdown ? styles.active : ''}`}
+                  className={`${styles.headerButton} ${
+                    showAuthDropdown ? styles.active : ''
+                  }`}
                   aria-label="Login/Register"
                   onClick={toggleAuthDropdown}
                 >
@@ -148,7 +180,11 @@ function Header() {
                   <div className={styles.headerDropdown}>
                     <ul className={styles.headerDropdownList}>
                       <li className={styles.headerDropdownItem}>
-                        <button type="button" className={styles.headerButtonText} onClick={() => navigate('/login')}>
+                        <button
+                          type="button"
+                          className={styles.headerButtonText}
+                          onClick={() => navigate('/login')}
+                        >
                           Sign In
                         </button>
                       </li>
