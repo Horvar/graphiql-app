@@ -59,13 +59,12 @@ function GraphiQLPage() {
 
   useEffect(() => {
     if (loading) return;
-    if (user) navigate('/login');
-  });
+    if (!user) navigate('/login');
+  }, [user, loading]);
 
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.titleTest}>Страница GraphiQL</h1>
-
       <div>
         <input
           className={styles.apiInput}
