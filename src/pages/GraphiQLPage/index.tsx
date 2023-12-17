@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {useAuthState} from 'react-firebase-hooks/auth'
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/firebase';
 import { useNavigate } from 'react-router-dom';
 import { Docs } from './docs/docs';

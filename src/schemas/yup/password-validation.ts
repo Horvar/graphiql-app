@@ -1,4 +1,4 @@
-import { string } from "yup";
+import { string } from 'yup';
 
 export const passwordSchema = string()
   .required('Enter password!')

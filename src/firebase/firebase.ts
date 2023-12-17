@@ -25,10 +25,7 @@ async function logInWithEmailAndPassword(email: string, password: string) {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (err) {
     if (err instanceof FirebaseError) {
-      if (
-        err.code ===
-        'auth/invalid-credential'
-      ) {
+      if (err.code === 'auth/invalid-credential') {
         return 'You have entered an incorrect email address or password!';
       }
     }
