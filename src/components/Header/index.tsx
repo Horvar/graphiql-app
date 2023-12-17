@@ -51,7 +51,7 @@ function Header() {
 
   const handleScroll = () => {
     const offset = window.scrollY;
-    
+
     if (window.innerWidth > 540) {
       setIsMobile(false);
 
@@ -68,7 +68,6 @@ function Header() {
     } else {
       setIsMobile(true);
     }
-
   };
 
   useEffect(() => {
@@ -80,11 +79,11 @@ function Header() {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 540);
     };
-  
+
     checkIfMobile();
-  
+
     window.addEventListener('resize', checkIfMobile);
-  
+
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
@@ -99,9 +98,9 @@ function Header() {
   return (
     <>
       <header
-        className={`${styles.header} ${isScrolled || isMobile ? styles.headerFixed : ''} ${
-          animate ? styles.headerHiding : ''
-        }`}
+        className={`${styles.header} ${
+          isScrolled || isMobile ? styles.headerFixed : ''
+        } ${animate ? styles.headerHiding : ''}`}
       >
         <div className={`${styles.headerContainer} container`}>
           <div className={styles.headerColLeft}>

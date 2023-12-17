@@ -3,8 +3,6 @@
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/firebase';
 
-import Header from '../../components/Header';
-
 function HomePage() {
   const [loading] = useAuthState(auth);
 
@@ -14,7 +12,7 @@ function HomePage() {
 
   return (
     <>
-      <Header />
+      Страница приветствия
     </>
   );
 }
