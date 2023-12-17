@@ -10,11 +10,7 @@ function HomePage() {
     return <div>Loading...</div>;
   }
 
-  return (
-    <>
-      Страница приветствия
-    </>
-  );
+  return <>Страница приветствия</>;
 }
 
 export default HomePage;

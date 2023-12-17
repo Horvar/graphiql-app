@@ -109,12 +109,9 @@
 }
 
 .headerButtonText {
-  font-size: 16px;
-
   padding: 8px 0;
 
   @media (max-width: $resM) {
-    font-size: 14px;
     padding: 4px 0;
   }
 
