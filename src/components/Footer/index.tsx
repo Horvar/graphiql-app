@@ -20,6 +20,7 @@ function Footer() {
               className={styles.footerLogoImg}
             />
           </a>
+          <div className={styles.footerTextMobile}>2023 — 2024</div>
         </div>
         <div className={styles.footerColCenter}>
           <div className={styles.footerText}>2023 — 2024</div>

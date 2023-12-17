@@ -8,6 +8,10 @@
   margin-top: auto;
 
   overflow: hidden;
+
+  @media (max-width: $resS) {
+    padding: 8px 0;
+  }
 }
 
 .footerContainer {
@@ -28,6 +32,13 @@
 }
 
 .footerColLeft {
+  @media (max-width: $resS) {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    margin-left: -16px;
+  }
 }
 
 .footerColCenter {
@@ -43,10 +54,14 @@
 }
 
 .footerLogo {
-  padding: 16px;
+  padding: 32px;
 
   position: relative;
   z-index: 0;
+
+  @media (max-width: $resM) {
+    padding: 16px;
+  }
 
   &:hover {
     .footerLogoImg {
@@ -84,6 +99,23 @@
 
 .footerText {
   color: $colorWhite;
+
+  font-weight: 300;
+
+  opacity: 0.5;
+}
+
+.footerTextMobile {
+  padding-left: 16px;
+  font-weight: 500;
+
+  opacity: 0.5;
+
+  position: relative;
+
+  @media (min-width: ($resS + 1px)) {
+    display: none;
+  }
 }
 
 .footerLinkList {
@@ -126,6 +158,11 @@
   height: 32px;
 
   opacity: 0.8;
+
+  @media (max-width: $resS) {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .footerLinkText {
