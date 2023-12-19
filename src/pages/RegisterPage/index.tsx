@@ -76,7 +76,6 @@ function RegisterPage() {
 
           <div className={styles.accoutFormWrapper}>
             <label className={styles.accoutFormLabel}>
-              <span className={styles.accoutFormLegend}>Email:</span>
               <input
                 type="email"
                 {...register('email')}
@@ -93,7 +92,6 @@ function RegisterPage() {
             </label>
 
             <label className={styles.accoutFormLabel}>
-              <span className={styles.accoutFormLegend}>Password:</span>
               <input
                 type={passwordShown ? 'text' : 'password'}
                 {...register('password')}
@@ -123,7 +121,6 @@ function RegisterPage() {
             </label>
 
             <label className={styles.accoutFormLabel}>
-              <span className={styles.accoutFormLegend}>Confirm Password:</span>
               <input
                 type={confirmPasswordShown ? 'text' : 'password'}
                 {...register('confirm-password')}

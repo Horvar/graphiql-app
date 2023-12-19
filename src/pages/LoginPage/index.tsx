@@ -65,7 +65,6 @@ function LoginPage() {
 
           <div className={styles.accoutFormWrapper}>
             <label className={styles.accoutFormLabel}>
-              <span className={styles.accoutFormLegend}>Email:</span>
               <input
                 type="email"
                 {...register('email')}
@@ -82,7 +81,6 @@ function LoginPage() {
             </label>
 
             <label className={styles.accoutFormLabel}>
-              <span className={styles.accoutFormLegend}>Password:</span>
               <input
                 type={passwordShown ? 'text' : 'password'}
                 {...register('password')}
