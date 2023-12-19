@@ -10,7 +10,6 @@
 }
 
 .accoutForm {
-  max-width: 700px;
   margin: 0 auto;
 
   padding: 32px 32px 64px;
@@ -20,6 +19,14 @@
   flex-direction: column;
 
   background: $colorBg2;
+
+  @media (min-width: ($resM + 1px)) {
+    max-width: 700px;
+  }
+
+  @media (max-width: $resM) {
+    padding: 16px 16px 32px;
+  }
 }
 
 .accoutFormWrapper {
@@ -136,6 +143,11 @@
   background: transparentize($colorBg1, 0.25);
   border-radius: 50%;
 
+  @media (max-width: $resM) {
+    width: 28px;
+    height: 28px;
+  }
+
   &:hover {
     color: $colorPrimary2;
   }
@@ -154,9 +166,16 @@
 
   transition: 0.1s;
 
+  @media (max-width: $resM) {
+    font-size: 18px;
+  }
+
   &:hover {
     background: transparentize($colorPrimary2, 0.9);
 
     color: $colorPrimary2;
   }
+}
+
+.accoutFormText {
 }

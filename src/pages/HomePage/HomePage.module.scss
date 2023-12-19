@@ -44,6 +44,10 @@
   padding: 0;
 
   list-style: none;
+
+  @media (min-width: ($resM + 1px)) {
+    max-width: 700px;
+  }
 }
 
 .teamItem {
@@ -145,10 +149,6 @@
 }
 
 .teamItemText {
-  @media (min-width: ($resM + 1px)) {
-    max-width: 420px;
-  }
-
   @media (max-width: $resS) {
     text-align: center;
   }

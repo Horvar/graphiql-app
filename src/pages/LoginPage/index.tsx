@@ -9,7 +9,7 @@ import { object, string } from 'yup';
 import { auth, logInWithEmailAndPassword } from '../../firebase/firebase';
 import { User } from '../../entities/user.interface';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { passwordSchema } from '../../schemas/yup';
 
 const schema = object().shape({
@@ -120,6 +120,13 @@ function LoginPage() {
             {errorLogin && (
               <div className={styles.accoutFormError}>{errorLogin}</div>
             )}
+
+            <div className={`${styles.accoutFormText} text-common`}>
+              <p>
+                If you&apos;re new here and don&apos;t have an account yet,
+                please <Link to="/register">click&nbsp;here</Link> to register
+              </p>
+            </div>
           </div>
         </form>
       </div>
