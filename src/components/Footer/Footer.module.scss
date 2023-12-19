@@ -109,6 +109,8 @@
   padding-left: 16px;
   font-weight: 500;
 
+  color: $colorBlack;
+
   opacity: 0.5;
 
   position: relative;
@@ -137,13 +139,14 @@
   align-items: center;
   gap: 8px;
 
+  font-weight: 400;
   text-decoration: none;
 
   color: $colorPrimary1;
   background: transparentize($colorPrimary1, 0.9);
 
-  padding: 4px 8px;
-  border-radius: 8px;
+  padding: 4px 12px 4px 8px;
+  border-radius: 100px;
 
   transition: 0.1s;
 

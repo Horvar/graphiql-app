@@ -33,6 +33,7 @@ function Footer() {
                 target="_blank"
                 className={styles.footerLink}
                 rel="noreferrer"
+                aria-label="Semyon's GitHub"
               >
                 <svg className={styles.footerLinkIcon}>
                   <use href={`${icons}#github`}></use>
@@ -46,6 +47,7 @@ function Footer() {
                 target="_blank"
                 className={styles.footerLink}
                 rel="noreferrer"
+                aria-label="Dimash's GitHub"
               >
                 <svg className={styles.footerLinkIcon}>
                   <use href={`${icons}#github`}></use>
@@ -59,6 +61,7 @@ function Footer() {
                 target="_blank"
                 className={styles.footerLink}
                 rel="noreferrer"
+                aria-label="Almas's GitHub"
               >
                 <svg className={styles.footerLinkIcon}>
                   <use href={`${icons}#github`}></use>
