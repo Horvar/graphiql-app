@@ -10,6 +10,8 @@
   height: 72px;
   background: $colorBg2;
 
+  border-bottom: 1px solid $colorBg1;
+
   transition: 0.5s;
 
   @media (max-width: $resM) {
@@ -29,11 +31,6 @@
 
   @media (max-width: $resS) {
     height: 48px;
-  }
-
-  .headerButtonLink,
-  .headerButton {
-    // border-radius: 0;
   }
 }
 

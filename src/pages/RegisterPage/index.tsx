@@ -1,11 +1,14 @@
-// import styles from './RegisterPage.module.scss';
+import styles from './RegisterPage.module.scss';
+
+import icons from '../../assets/icons/sprite.svg';
+
 import { object, ref, string } from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { User } from '../../entities/user.interface';
 import { auth, registerWithEmailAndPassword } from '../../firebase/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { MouseEvent, useEffect, useState } from 'react';
 import { passwordSchema } from '../../schemas/yup';
 
@@ -65,35 +68,105 @@ function RegisterPage() {
   }, [user, loading]);
 
   return (
-    <form onSubmit={handleSubmit(onRegister)}>
-      <label htmlFor="email">Email:</label>
-      <input type="email" {...register('email')} id="email" />
-      {errors.email && <p>{errors.email.message}</p>}
-      <label htmlFor="password">Password:</label>
-      <input
-        type={passwordShown ? 'text' : 'password'}
-        {...register('password')}
-        id="password"
-      />
-      <button onClick={togglePasswordVisibility}>
-        {passwordShown ? 'Hide' : 'Show'} the password
-      </button>
-      {errors.password && <p>{errors.password.message}</p>}
-      <label htmlFor="confirm-password">Confirm Password:</label>
-      <input
-        type={confirmPasswordShown ? 'text' : 'password'}
-        {...register('confirm-password')}
-        id="confirm-password"
-      />
-      <button onClick={toggleConfirmPasswordVisibility}>
-        {confirmPasswordShown ? 'Hide' : 'Show'} the password
-      </button>
-      {errors['confirm-password'] && (
-        <p>{errors['confirm-password'].message}</p>
-      )}
-      <input type="submit" value="Register" />
-      {registerError && <p>{registerError}</p>}
-    </form>
+    <section className={styles.accout}>
+      <div className={`${styles.accoutContainer} container container--small`}>
+        <h1 className={`${styles.accoutTitle} title-1`}>Account</h1>
+        <form className={styles.accoutForm} onSubmit={handleSubmit(onRegister)}>
+          <h2 className={`${styles.accoutFormTitle} title-2`}>Sign Up</h2>
+
+          <div className={styles.accoutFormWrapper}>
+            <label className={styles.accoutFormLabel}>
+              <input
+                type="email"
+                {...register('email')}
+                placeholder="Enter your Email"
+                className={`${styles.accoutFormInput} ${
+                  errors.email ? styles.accoutFormInputError : ''
+                }`}
+              />
+              {errors.email && (
+                <span className={styles.accoutFormError}>
+                  {errors.email.message}
+                </span>
+              )}
+            </label>
+
+            <label className={styles.accoutFormLabel}>
+              <input
+                type={passwordShown ? 'text' : 'password'}
+                {...register('password')}
+                placeholder="Enter your Password"
+                className={`${styles.accoutFormInput} ${
+                  errors.password ? styles.accoutFormInputError : ''
+                }`}
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className={styles.accoutFormReveal}
+              >
+                <svg className={styles.accoutFormRevealIcon}>
+                  <use
+                    href={`${icons}#${
+                      passwordShown ? 'eyeClosed' : 'eyeOpened'
+                    }`}
+                  ></use>
+                </svg>
+              </button>
+              {errors.password && (
+                <span className={styles.accoutFormError}>
+                  {errors.password.message}
+                </span>
+              )}
+            </label>
+
+            <label className={styles.accoutFormLabel}>
+              <input
+                type={confirmPasswordShown ? 'text' : 'password'}
+                {...register('confirm-password')}
+                placeholder="Confirm your Password"
+                className={`${styles.accoutFormInput} ${
+                  errors.password ? styles.accoutFormInputError : ''
+                }`}
+              />
+              <button
+                type="button"
+                onClick={toggleConfirmPasswordVisibility}
+                className={styles.accoutFormReveal}
+              >
+                <svg className={styles.accoutFormRevealIcon}>
+                  <use
+                    href={`${icons}#${
+                      confirmPasswordShown ? 'eyeClosed' : 'eyeOpened'
+                    }`}
+                  ></use>
+                </svg>
+              </button>
+              {errors['confirm-password'] && (
+                <span className={styles.accoutFormError}>
+                  {errors['confirm-password'].message}
+                </span>
+              )}
+            </label>
+
+            <input
+              type="submit"
+              value="Register"
+              className={styles.accoutFormSubmit}
+            />
+
+            {registerError && <p>{registerError}</p>}
+
+            <div className={`${styles.accoutFormText} text-common`}>
+              <p>
+                If you already have an account, please{' '}
+                <Link to="/login">click&nbsp;here</Link> to sign in
+              </p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
   );
 }
 

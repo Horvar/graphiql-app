@@ -77,7 +77,8 @@ function HomePage() {
                         href="https://github.com/horvar"
                         target="_blank"
                         aria-label="Semyon's GitHub"
-                        className={styles.teamItemLink} rel="noreferrer"
+                        className={styles.teamItemLink}
+                        rel="noreferrer"
                       >
                         <svg className={styles.teamItemLinkIcon}>
                           <use href={`${icons}#github`}></use>
@@ -111,7 +112,8 @@ function HomePage() {
                         href="https://github.com/horvar"
                         target="_blank"
                         aria-label="Dimash's GitHub"
-                        className={styles.teamItemLink} rel="noreferrer"
+                        className={styles.teamItemLink}
+                        rel="noreferrer"
                       >
                         <svg className={styles.teamItemLinkIcon}>
                           <use href={`${icons}#github`}></use>
@@ -145,7 +147,8 @@ function HomePage() {
                         href="https://github.com/horvar"
                         target="_blank"
                         aria-label="Almas's GitHub"
-                        className={styles.teamItemLink} rel="noreferrer"
+                        className={styles.teamItemLink}
+                        rel="noreferrer"
                       >
                         <svg className={styles.teamItemLinkIcon}>
                           <use href={`${icons}#github`}></use>
@@ -197,7 +200,11 @@ function HomePage() {
                 sharing their knowledge and becoming mentors to the next
                 generation of students. For additional details or to enroll,
                 interested parties are invited to visit the{' '}
-                <a href="https://rs.school/react/" target="_blank" rel="noreferrer">
+                <a
+                  href="https://rs.school/react/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   RSSchool website
                 </a>
                 .
