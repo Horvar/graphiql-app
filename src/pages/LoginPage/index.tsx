@@ -1,4 +1,6 @@
-// import styles from './LoginPage.module.scss'
+import styles from './LoginPage.module.scss';
+
+import icons from '../../assets/icons/sprite.svg';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { MouseEvent, useEffect, useState } from 'react';
@@ -55,23 +57,73 @@ function LoginPage() {
   }, [user, loading]);
 
   return (
-    <form onSubmit={handleSubmit(onLogin)}>
-      <label htmlFor="email">Email:</label>
-      <input type="email" {...register('email')} id="email" />
-      {errors.email && <p>{errors.email.message}</p>}
-      <label htmlFor="password">Password:</label>
-      <input
-        type={passwordShown ? 'text' : 'password'}
-        {...register('password')}
-        id="password"
-      />
-      <button onClick={togglePasswordVisibility}>
-        {passwordShown ? 'Hide' : 'Show'} the password
-      </button>
-      {errors.password && <p>{errors.password.message}</p>}
-      <input type="submit" value="Login" />
-      {errorLogin && <p>{errorLogin}</p>}
-    </form>
+    <section className={styles.accout}>
+      <div className={`${styles.accoutContainer} container container--small`}>
+        <h1 className={`${styles.accoutTitle} title-1`}>Account</h1>
+        <form className={styles.accoutForm} onSubmit={handleSubmit(onLogin)}>
+          <h2 className={`${styles.accoutFormTitle} title-2`}>Sign In</h2>
+
+          <div className={styles.accoutFormWrapper}>
+            <label className={styles.accoutFormLabel}>
+              <span className={styles.accoutFormLegend}>Email:</span>
+              <input
+                type="email"
+                {...register('email')}
+                placeholder="Enter your Email"
+                className={`${styles.accoutFormInput} ${
+                  errors.email ? styles.accoutFormInputError : ''
+                }`}
+              />
+              {errors.email && (
+                <span className={styles.accoutFormError}>
+                  {errors.email.message}
+                </span>
+              )}
+            </label>
+
+            <label className={styles.accoutFormLabel}>
+              <span className={styles.accoutFormLegend}>Password:</span>
+              <input
+                type={passwordShown ? 'text' : 'password'}
+                {...register('password')}
+                placeholder="Enter your Password"
+                className={`${styles.accoutFormInput} ${
+                  errors.password ? styles.accoutFormInputError : ''
+                }`}
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className={styles.accoutFormReveal}
+              >
+                <svg className={styles.accoutFormRevealIcon}>
+                  <use
+                    href={`${icons}#${
+                      passwordShown ? 'eyeClosed' : 'eyeOpened'
+                    }`}
+                  ></use>
+                </svg>
+              </button>
+              {errors.password && (
+                <span className={styles.accoutFormError}>
+                  {errors.password.message}
+                </span>
+              )}
+            </label>
+
+            <input
+              type="submit"
+              value="Login"
+              className={styles.accoutFormSubmit}
+            />
+
+            {errorLogin && (
+              <div className={styles.accoutFormError}>{errorLogin}</div>
+            )}
+          </div>
+        </form>
+      </div>
+    </section>
   );
 }
 

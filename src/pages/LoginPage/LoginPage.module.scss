@@ -1,6 +1,162 @@
-.titleTest {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 4em;
-  color: magenta;
-  text-align: center;
+@import '../../variables.scss';
+
+.accout {
+}
+
+.accoutContainer {
+}
+
+.accoutTitle {
+}
+
+.accoutForm {
+  max-width: 700px;
+  margin: 0 auto;
+
+  padding: 32px 32px 64px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  background: $colorBg2;
+}
+
+.accoutFormWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.accoutFormTitle {
+}
+
+.accoutFormLabel {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  pointer-events: none;
+}
+
+.accoutFormError,
+.accoutFormLegend {
+  padding-bottom: 4px;
+
+  position: absolute;
+  top: 0;
+  transform: translateY(-100%);
+
+  font-weight: 400;
+}
+
+.accoutFormLegend {
+  color: $colorWhite;
+  left: 0;
+}
+
+.accoutFormSubmit,
+.accoutFormInput {
+  width: 100%;
+  height: 48px;
+
+  border-radius: 100px;
+}
+
+.accoutFormInput {
+  font: inherit;
+  color: $colorWhite;
+
+  padding: 0 16px;
+  box-sizing: border-box;
+
+  background: $colorBg1;
+  border: 1px solid transparentize($colorPrimary1, 0);
+
+  font-weight: 400;
+
+  pointer-events: auto;
+
+  &::placeholder {
+    color: transparentize($colorPrimary1, 0.5);
+  }
+
+  &:not(:placeholder-shown) {
+    border: 1px solid transparentize($colorWhite, 0.5);
+  }
+
+  &:focus {
+    outline: none;
+
+    border-color: $colorPrimary2;
+  }
+}
+
+.accoutFormInputError {
+  border-color: $colorError !important;
+
+  &::placeholder {
+    color: transparentize($colorError, 0);
+  }
+}
+
+.accoutFormError {
+  max-width: 75%;
+
+  right: 0;
+
+  color: $colorError;
+}
+
+.accoutFormReveal {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+
+  background: transparent;
+  border: none;
+
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.accoutFormRevealIcon {
+  width: 32px;
+  height: 32px;
+
+  padding: 4px;
+  margin: -4px;
+
+  color: $colorPrimary1;
+  transition: 0.1s;
+
+  background: transparentize($colorBg1, 0.25);
+  border-radius: 50%;
+
+  &:hover {
+    color: $colorPrimary2;
+  }
+}
+
+.accoutFormSubmit {
+  border: none;
+  background: transparentize($colorPrimary1, 0.9);
+
+  font: inherit;
+  font-size: 24px;
+  font-weight: 400;
+  color: $colorPrimary1;
+
+  cursor: pointer;
+
+  transition: 0.1s;
+
+  &:hover {
+    background: transparentize($colorPrimary2, 0.9);
+
+    color: $colorPrimary2;
+  }
 }
