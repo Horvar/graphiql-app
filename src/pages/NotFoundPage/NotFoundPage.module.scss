@@ -1,6 +1,68 @@
-.titleTest {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 4em;
-  color: magenta;
+@import '../../variables.scss';
+
+.notFound {
+}
+
+.notFoundContainer {
+}
+
+.notFoundTitle {
+}
+
+.notFoundError {
+  font-size: 256px;
+  line-height: 100%;
+  font-weight: 400;
   text-align: center;
+
+  color: $colorError;
+
+  margin-bottom: 32px;
+
+  @media (max-width: $resM) {
+    font-size: 200px;
+  }
+
+  @media (max-width: $resS) {
+    font-size: 128px;
+  }
+}
+
+.notFoundText {
+  text-align: center;
+
+  margin-bottom: 32px;
+}
+
+.notFoundButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 48px;
+  width: 256px;
+
+  background: transparentize($colorPrimary1, 0.9);
+  color: $colorPrimary1;
+
+  font-size: 24px;
+  font-weight: 400;
+  text-decoration: none;
+
+  border-radius: 100px;
+
+  margin: 0 auto;
+
+  cursor: pointer;
+
+  transition: 0.1s;
+
+  @media (max-width: $resM) {
+    font-size: 18px;
+  }
+
+  &:hover {
+    background: transparentize($colorPrimary2, 0.9);
+    color: $colorPrimary2;
+  }
 }
