@@ -11,7 +11,9 @@
 body {
   font-family: 'Roboto';
   font-size: 16px;
-  line-height: 130%;
+  line-height: 150%;
+  font-weight: 300;
+  color: transparentize($colorWhite, 0.5);
 
   box-sizing: border-box;
   padding: 72px 0 0;
@@ -44,6 +46,14 @@ h1 {
   margin: 0;
 }
 
+main {
+  padding: 64px 0 128px;
+
+  @media (max-width: $resM) {
+    padding: 32px 0 64px;
+  }
+}
+
 .container {
   width: 100%;
   max-width: 1400px;
@@ -63,5 +73,85 @@ h1 {
 
   @media (max-width: $resS) {
     padding: 0 16px;
+  }
+
+  &--small {
+    max-width: 1100px;
+  }
+}
+
+.title-1,
+.title-2 {
+  text-align: center;
+}
+
+.title-1,
+.title-2,
+.title-3 {
+  line-height: 130%;
+  font-weight: 400;
+  color: $colorWhite;
+
+  margin: 0;
+  padding: 0;
+}
+
+.title-1 {
+  font-size: 40px;
+
+  margin-bottom: 64px;
+
+  @media (max-width: $resM) {
+    font-size: 32px;
+
+    margin-bottom: 48px;
+  }
+}
+
+.title-2 {
+  font-size: 32px;
+
+  margin-bottom: 32px;
+
+  @media (max-width: $resM) {
+    font-size: 24px;
+
+    margin-bottom: 24px;
+  }
+}
+
+.title-3 {
+  font-size: 24px;
+
+  @media (max-width: $resM) {
+    font-size: 18px;
+  }
+}
+
+.text-common {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    color: $colorPrimary1;
+    text-decoration: none;
+
+    transition: 0.1s;
+
+    &:hover {
+      color: $colorPrimary2;
+    }
+  }
+
+  b,
+  strong {
+    color: $colorWhite;
+    font-weight: 300;
   }
 }

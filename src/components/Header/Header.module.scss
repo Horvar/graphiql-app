@@ -23,16 +23,17 @@
 
 .headerFixed {
   position: fixed;
+  z-index: 1;
 
-  height: 48px;
+  height: 56px;
 
   @media (max-width: $resS) {
-    height: 40px;
+    height: 48px;
   }
 
   .headerButtonLink,
   .headerButton {
-    border-radius: 0;
+    // border-radius: 0;
   }
 }
 
@@ -52,13 +53,11 @@
 
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
 
   position: relative;
 
   @media (max-width: $resM) {
-    gap: 8px;
-
     position: relative;
   }
 }
@@ -80,6 +79,8 @@
   background: transparent;
   border: none;
 
+  font-weight: 400;
+
   color: $colorPrimary1;
 
   cursor: pointer;
@@ -98,7 +99,7 @@
 
   background: transparentize($colorPrimary1, 0.9);
 
-  border-radius: 8px;
+  border-radius: 100px;
 
   @media (max-width: $resM) {
     height: 40px;
@@ -128,7 +129,7 @@
   display: flex;
   gap: 8px;
 
-  padding: 0 16px 0 8px;
+  padding: 0 16px 0 12px;
 
   color: $colorPrimary3;
   background: transparentize($colorPrimary3, 0.9);
@@ -164,15 +165,10 @@
 }
 
 .headerButtonIcon {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
 
   color: inherit;
-
-  @media (max-width: $resM) {
-    width: 32px;
-    height: 32px;
-  }
 }
 
 .headerDropdownWrapper {
