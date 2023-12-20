@@ -1,81 +1,174 @@
-import { useEffect, useState } from 'react';
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
-import { IntrospectionQuery } from 'graphql';
-import styles from './docs.module.css';
+import React, { useState, useEffect } from 'react';
+import {
+  useLazyQuery,
+  gql,
+  InMemoryCache,
+  ApolloClient,
+  ApolloProvider,
+} from '@apollo/client';
 
-type Props = {
-  isDocsOpen: boolean;
-  url: string;
+const SCHEMA_QUERY = gql`
+  query IntrospectionQuery {
+    __schema {
+      queryType {
+        name
+      }
+      mutationType {
+        name
+      }
+      subscriptionType {
+        name
+      }
+      types {
+        kind
+        name
+        description
+        fields(includeDeprecated: true) {
+          name
+          description
+          args {
+            name
+            description
+            type {
+              name
+              kind
+            }
+            defaultValue
+          }
+          type {
+            name
+            kind
+          }
+        }
+        inputFields {
+          ...InputValue
+        }
+        interfaces {
+          ...TypeRef
+        }
+        enumValues(includeDeprecated: true) {
+          name
+          description
+        }
+        possibleTypes {
+          ...TypeRef
+        }
+      }
+    }
+  }
+
+  fragment InputValue on __InputValue {
+    name
+    description
+    type {
+      name
+      kind
+      ofType {
+        name
+      }
+    }
+    defaultValue
+  }
+
+  fragment TypeRef on __Type {
+    kind
+    name
+    ofType {
+      name
+    }
+  }
+`;
+
+type GraphQLType = {
+  kind: string;
+  name: string;
+  description: string;
+  fields: {
+    name: string;
+    description: string;
+    args: Array<{
+      name: string;
+      description: string;
+      type: { name: string; kind: string };
+      defaultValue: string;
+    }>;
+    type: { name: string; kind: string };
+  }[];
 };
 
-export const Docs = ({ isDocsOpen, url }: Props) => {
-  const [open, setOpen] = useState(false);
-  const [schema, setSchema] = useState<IntrospectionQuery[]>([]);
+type DocumentationProps = {
+  url?: string;
+};
 
-  const displayDocs = () => {
-    const client = new ApolloClient({
-      uri: url,
-      cache: new InMemoryCache(),
-    });
-
-    client
-      .query({
-        query: gql`
-          query GetSchema {
-            __schema {
-              types {
-                name
-                kind
-                description
-                fields {
-                  name
-                  description
-                  type {
-                    name
-                    kind
-                  }
-                }
-              }
-            }
-          }
-        `,
-      })
-      .then((result) => {
-        const schema = result.data.__schema;
-
-        const schemaResult = [];
-        schema.types.forEach((type) => {
-          if (type.fields) {
-            type.fields.forEach((field) => {
-              schemaResult.push({
-                name: field.name,
-                description: field.description || 'Нет описания',
-                type: field.type.name,
-              });
-            });
-          }
-        });
-        setSchema(schemaResult);
-      })
-      .catch((error) => {
-        console.error('Ошибка при получении схемы:', error);
-      });
-    setOpen(!open);
-  };
+const Documentation = () => {
+  const [loadSchema, { called, loading, data }] = useLazyQuery(SCHEMA_QUERY);
+  const [types, setTypes] = useState<GraphQLType[]>([]);
+  console.log(types)
+  console.log(types.filter((type) => {
+    if (type.name === 'Character') {
+      return type
+    }
+  }))
 
   useEffect(() => {
-    displayDocs();
-  }, []);
+    loadSchema();
+  }, [loadSchema]);
+
+  useEffect(() => {
+    if (data && data.__schema) {
+      setTypes(data.__schema.types);
+    }
+  }, [data]);
+
+  if (!called || loading) {
+    return <p>Загрузка...</p>;
+  }
 
   return (
-    <div className={isDocsOpen ? styles.docsWrapper : styles.docsWrapperClose}>
-      {schema.map((item, index) => (
-        <div className={styles.docsContent} key={index}>
-          <p>{item.name}</p>
-          <p>-{item.description}</p>
-          <p>-{item.type}</p>
+    <div>
+      <h1>Документация схемы</h1>
+      {types.map((type) => (
+        <div key={type.name}>
+          <h2>{type.name}</h2>
+          <p>{type.description}</p>
+          {type.fields && (
+            <div>
+              <h3>Поля</h3>
+              {type.fields.map((field) => (
+                <div key={field.name}>
+                  <h4>{field.name}</h4>
+                  <p>{field.description}</p>
+                  {field.args && (
+                    <ul>
+                      {field.args.map((arg) => (
+                        <li key={arg.name}>
+                          <strong>{arg.name}</strong>: ({arg.type.name}){' '}
+                          {arg.description}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       ))}
     </div>
+  );
+};
+
+export const Docs: React.FC<DocumentationProps> = ({
+  url = 'https://rickandmortyapi.com/graphql',
+}) => {
+  const client = new ApolloClient({
+    uri: url,
+    cache: new InMemoryCache(),
+  });
+
+  return (
+    <ApolloProvider client={client}>
+      <Documentation />
+    </ApolloProvider>
   );
 };

@@ -118,7 +118,7 @@ function GraphiQLPage() {
         >
           Docs
         </button>
-        <Docs isDocsOpen={isDocsOpen} url={api} />
+        {isDocsOpen && <Docs url={api} />}
       </div>
     </div>
   );
