@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/firebase';
 import { useNavigate } from 'react-router-dom';
-import { Docs } from './docs/docs';
+// import { Docs } from './docs/docs';
 import styles from './GraphiQLPage.module.scss';
 
 function GraphiQLPage() {
@@ -64,7 +64,7 @@ function GraphiQLPage() {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.titleTest}>Страница GraphiQL</h1>
+      <h1 className={styles.titleTest}>GraphiQL Playground</h1>
       <div>
         <input
           className={styles.apiInput}
@@ -118,7 +118,7 @@ function GraphiQLPage() {
         >
           Docs
         </button>
-        <Docs isDocsOpen={isDocsOpen} url={api} />
+        {/* <Docs isDocsOpen={isDocsOpen} url={api} /> */}
       </div>
     </div>
   );
