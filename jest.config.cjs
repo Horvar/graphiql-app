@@ -19,4 +19,7 @@ module.exports = {
       statements: 80,
     },
   },
+  transform: {
+    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
+  },
 };
