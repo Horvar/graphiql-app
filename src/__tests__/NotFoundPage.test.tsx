@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import '@testing-library/jest-dom';
-import NotFoundPage from '../src/pages/NotFoundPage';
+import NotFoundPage from '../pages/NotFoundPage';
 
 describe('NotFoundPage', () => {
   it('renders correctly', () => {
