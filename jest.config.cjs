@@ -4,7 +4,7 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-    '\\.(gif|ttf|eot|svg)$': 'identity-obj-proxy',
+    '\\.(gif|ttf|eot|svg|jpg|jpeg|png|webp)$': '<rootDir>/__mocks__/fileMock.ts',
   },
   transformIgnorePatterns: ['/node_modules/'],
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
