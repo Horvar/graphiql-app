@@ -112,13 +112,15 @@ function GraphiQLPage() {
           {'>'}
         </button>
         <pre className={styles.output}>{output}</pre>
-        <button
-          className={styles.docsButton}
-          onClick={() => setIsDocsOpen(!isDocsOpen)}
-        >
-          Docs
-        </button>
-        <Docs isDocsOpen={isDocsOpen} url={api} />
+        {api && (
+          <button
+            className={styles.docsButton}
+            onClick={() => setIsDocsOpen(!isDocsOpen)}
+          >
+            Docs
+          </button>
+        )}
+        {isDocsOpen && <Docs url={api} />}
       </div>
     </div>
   );
