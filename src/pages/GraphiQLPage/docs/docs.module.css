@@ -16,3 +16,21 @@
 .docsWrapperClose {
   display: none;
 }
+
+.field-name {
+  color: #fff;
+}
+
+.field-type {
+  cursor: pointer;
+  color: rgb(78, 169, 252);
+}
+
+.field-type:hover {
+  transition: 0.5s;
+  color: rgb(30, 170, 20);
+}
+
+.title {
+  color: #9293a0;
+}

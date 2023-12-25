@@ -59,8 +59,8 @@ function GraphiQLPage() {
 
   useEffect(() => {
     if (loading) return;
-    if (!user) navigate('/login')
-  }, [user, loading])
+    if (!user) navigate('/login');
+  }, [user, loading]);
 
   return (
     <div className={styles.wrapper}>
@@ -112,12 +112,14 @@ function GraphiQLPage() {
           {'>'}
         </button>
         <pre className={styles.output}>{output}</pre>
-        <button
-          className={styles.docsButton}
-          onClick={() => setIsDocsOpen(!isDocsOpen)}
-        >
-          Docs
-        </button>
+        {api && (
+          <button
+            className={styles.docsButton}
+            onClick={() => setIsDocsOpen(!isDocsOpen)}
+          >
+            Docs
+          </button>
+        )}
         {isDocsOpen && <Docs url={api} />}
       </div>
     </div>
