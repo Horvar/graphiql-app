@@ -211,7 +211,7 @@ const Documentation = (props: { url: string }) => {
 
   return (
     <div>
-      <h1 className={styles.title}>Документация схемы</h1>
+      <h1 className={styles.title}>Docs</h1>
       {typeHistory.length >= 0 && (
         <p onClick={goToPreviousType}>{typeHistory[typeHistory.length - 1]}</p>
       )}
