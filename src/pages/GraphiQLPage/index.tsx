@@ -3,9 +3,27 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/firebase';
 import { useNavigate } from 'react-router-dom';
 import { Docs } from './docs/docs';
+
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { localizationType } from '../../types/localization';
+import translationsEn from '../../localization/en.json';
+import translationsRu from '../../localization/ru.json';
+
 import styles from './GraphiQLPage.module.scss';
 
 function GraphiQLPage() {
+  const language = useSelector((state: RootState) => state.language.language);
+
+  useEffect(() => {
+    localStorage.setItem('lang', language);
+  }, [language]);
+
+  const translations =
+    language === 'en'
+      ? (translationsEn as localizationType)
+      : (translationsRu as localizationType);
+
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
   const [api, setApi] = useState('');
@@ -64,7 +82,7 @@ function GraphiQLPage() {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.titleTest}>Страница GraphiQL</h1>
+      <h1 className={styles.titleTest}>{translations.graphQL.title}</h1>
       <div>
         <input
           className={styles.apiInput}
@@ -116,7 +134,7 @@ function GraphiQLPage() {
           className={styles.docsButton}
           onClick={() => setIsDocsOpen(!isDocsOpen)}
         >
-          Docs
+          {translations.graphQL.docs}
         </button>
         <Docs isDocsOpen={isDocsOpen} url={api} />
       </div>

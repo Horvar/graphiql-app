@@ -1,13 +1,32 @@
-import styles from './Header.module.scss';
-
-import icons from '../../assets/icons/sprite.svg';
-
 import { useState, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth, logout } from '../../firebase/firebase';
 
+import { useDispatch } from 'react-redux';
+import { setLanguage } from '../../store/languageSlice';
+
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { localizationType } from '../../types/localization';
+import translationsEn from '../../localization/en.json';
+import translationsRu from '../../localization/ru.json';
+
+import styles from './Header.module.scss';
+import icons from '../../assets/icons/sprite.svg';
+
 function Header() {
+  const language = useSelector((state: RootState) => state.language.language);
+
+  useEffect(() => {
+    localStorage.setItem('lang', language);
+  }, [language]);
+
+  const translations =
+    language === 'en'
+      ? (translationsEn as localizationType)
+      : (translationsRu as localizationType);
+
   const navigate = useNavigate();
   const [user, loading] = useAuthState(auth);
 
@@ -23,6 +42,12 @@ function Header() {
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  const dispatch = useDispatch();
+
+  const changeLanguage = (lang: string) => {
+    dispatch(setLanguage(lang));
   };
 
   useEffect(() => {
@@ -99,7 +124,7 @@ function Header() {
               <svg className={styles.headerButtonIcon}>
                 <use href={`${icons}#graphiql`}></use>
               </svg>
-              <span>Go to GraphiQL!</span>
+              <span>{translations.header.graphQL}</span>
             </button>
           )}
         </div>
@@ -122,13 +147,21 @@ function Header() {
               <div className={styles.headerDropdown}>
                 <ul className={styles.headerDropdownList}>
                   <li className={styles.headerDropdownItem}>
-                    <button type="button" className={styles.headerButtonText}>
-                      Russian
+                    <button
+                      type="button"
+                      className={styles.headerButtonText}
+                      onClick={() => changeLanguage('ru')}
+                    >
+                      {translations.header.language.russian}
                     </button>
                   </li>
                   <li className={styles.headerDropdownItem}>
-                    <button type="button" className={styles.headerButtonText}>
-                      English
+                    <button
+                      type="button"
+                      className={styles.headerButtonText}
+                      onClick={() => changeLanguage('en')}
+                    >
+                      {translations.header.language.english}
                     </button>
                   </li>
                 </ul>
@@ -160,7 +193,7 @@ function Header() {
                         className={styles.headerButtonText}
                         onClick={() => navigate('/login')}
                       >
-                        Sign In
+                        {translations.header.sign.in}
                       </button>
                     </li>
                     <li className={styles.headerDropdownItem}>
@@ -169,7 +202,7 @@ function Header() {
                         className={styles.headerButtonText}
                         onClick={() => navigate('/register')}
                       >
-                        Sign Up
+                        {translations.header.sign.up}
                       </button>
                     </li>
                   </ul>

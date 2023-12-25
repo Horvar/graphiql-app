@@ -1,7 +1,3 @@
-import styles from './RegisterPage.module.scss';
-
-import icons from '../../assets/icons/sprite.svg';
-
 import { object, ref, string } from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,6 +7,15 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate, Link } from 'react-router-dom';
 import { MouseEvent, useEffect, useState } from 'react';
 import { passwordSchema } from '../../schemas/yup';
+
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { localizationType } from '../../types/localization';
+import translationsEn from '../../localization/en.json';
+import translationsRu from '../../localization/ru.json';
+
+import icons from '../../assets/icons/sprite.svg';
+import styles from './RegisterPage.module.scss';
 
 const schema = object().shape({
   email: string()
@@ -27,6 +32,17 @@ const schema = object().shape({
 });
 
 function RegisterPage() {
+  const language = useSelector((state: RootState) => state.language.language);
+
+  useEffect(() => {
+    localStorage.setItem('lang', language);
+  }, [language]);
+
+  const translations =
+    language === 'en'
+      ? (translationsEn as localizationType)
+      : (translationsRu as localizationType);
+
   const {
     register,
     handleSubmit,
@@ -70,16 +86,17 @@ function RegisterPage() {
   return (
     <section className={styles.accout}>
       <div className={`${styles.accoutContainer} container container--small`}>
-        <h1 className={`${styles.accoutTitle} title-1`}>Account</h1>
         <form className={styles.accoutForm} onSubmit={handleSubmit(onRegister)}>
-          <h2 className={`${styles.accoutFormTitle} title-2`}>Sign Up</h2>
+          <h2 className={`${styles.accoutFormTitle} title-2`}>
+            {translations.signUp.title}
+          </h2>
 
           <div className={styles.accoutFormWrapper}>
             <label className={styles.accoutFormLabel}>
               <input
                 type="email"
                 {...register('email')}
-                placeholder="Enter your Email"
+                placeholder={translations.signUp.email}
                 className={`${styles.accoutFormInput} ${
                   errors.email ? styles.accoutFormInputError : ''
                 }`}
@@ -95,7 +112,7 @@ function RegisterPage() {
               <input
                 type={passwordShown ? 'text' : 'password'}
                 {...register('password')}
-                placeholder="Enter your Password"
+                placeholder={translations.signUp.password}
                 className={`${styles.accoutFormInput} ${
                   errors.password ? styles.accoutFormInputError : ''
                 }`}
@@ -124,7 +141,7 @@ function RegisterPage() {
               <input
                 type={confirmPasswordShown ? 'text' : 'password'}
                 {...register('confirm-password')}
-                placeholder="Confirm your Password"
+                placeholder={translations.signUp.confirm}
                 className={`${styles.accoutFormInput} ${
                   errors.password ? styles.accoutFormInputError : ''
                 }`}
@@ -151,17 +168,15 @@ function RegisterPage() {
 
             <input
               type="submit"
-              value="Register"
+              value={translations.signUp.submit}
               className={styles.accoutFormSubmit}
             />
 
             {registerError && <p>{registerError}</p>}
 
             <div className={`${styles.accoutFormText} text-common`}>
-              <p>
-                If you already have an account, please{' '}
-                <Link to="/login">click&nbsp;here</Link> to sign in
-              </p>
+              <p>{translations.signUp.hint}</p>
+              <Link to="/login">{translations.signUp.link}</Link>
             </div>
           </div>
         </form>
