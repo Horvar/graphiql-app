@@ -51,10 +51,39 @@ function GraphiQLPage() {
 
   const onHandlerQuery = () => {
     makeRequest(input, variables, headers);
+    onPrettifyQuery();
   };
 
   const handlerChangeApi = (event: React.ChangeEvent<HTMLInputElement>) => {
     setApi(event.target.value);
+  };
+
+  function prettifyQuery(query: string): string {
+    const lines = query.split('\n');
+    const prettifiedQuery: string[] = [];
+    let indentLevel = 0;
+
+    lines.forEach((line) => {
+      const trimmedLine = line.trim();
+      if (trimmedLine === '') return;
+
+      if (trimmedLine.startsWith('}')) {
+        indentLevel = Math.max(0, indentLevel - 1);
+      }
+
+      prettifiedQuery.push('  '.repeat(indentLevel) + trimmedLine);
+
+      if (trimmedLine.endsWith('{')) {
+        indentLevel++;
+      }
+    });
+
+    return prettifiedQuery.join('\n');
+  }
+
+  const onPrettifyQuery = (): void => {
+    const prettified = prettifyQuery(input);
+    setInput(prettified);
   };
 
   useEffect(() => {
