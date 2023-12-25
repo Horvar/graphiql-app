@@ -74,6 +74,10 @@
   height: 48px;
 
   border-radius: 100px;
+
+  @media (max-width: $resM) {
+    height: 40px;
+  }
 }
 
 .accoutFormInput {
