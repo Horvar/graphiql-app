@@ -1,3 +1,6 @@
+import styles from './docs.module.scss';
+import icons from '../../../assets/icons/sprite.svg';
+
 import React, { useState, useEffect } from 'react';
 import {
   useLazyQuery,
@@ -6,7 +9,6 @@ import {
   ApolloClient,
   ApolloProvider,
 } from '@apollo/client';
-import styles from './docs.module.css';
 
 const SCHEMA_QUERY = gql`
   query IntrospectionQuery {
@@ -144,17 +146,17 @@ const Documentation = (props: { url: string }) => {
   const renderFields = () => {
     const type = types.find((type) => type.name === activeTypeName);
 
-    if (!type || !type.fields) return <p>{type?.description}</p>;
+    if (!type || !type.fields) return <div>{type?.description}</div>;
 
     return (
       <>
-        <h1 className={styles.title}>{type.name}</h1>
+        <h1 className={`${styles.docsSubtitle} title-3`}>{type.name}</h1>
         <p>{type?.description}</p>
         {type.fields.map((field) => (
           <div key={field.name}>
-            <span className={styles['field-name']}>{field.name} </span>
+            <span className={styles['docsName']}>{field.name} </span>
             <span
-              className={styles['field-type']}
+              className={styles['docsType']}
               onClick={() => {
                 goToType(field.type.name ?? field.type.ofType.name);
               }}
@@ -198,25 +200,39 @@ const Documentation = (props: { url: string }) => {
       setTypes(data.__schema.types);
       setQueryName(data.__schema.queryType.name);
       setMutationName(data.__schema?.mutationType?.name);
-    } 
+    }
   }, [data]);
 
-  if (!called || loading ) {
+  if (!called || loading) {
     return <p>Загрузка...</p>;
   }
 
   if (!data) {
-    return <p>Error with fetching data. Please try again!</p>
+    return (
+      <div className={styles.docsError}>
+        Error with fetching data. Please try again!
+      </div>
+    );
   }
 
   return (
-    <div>
-      <h1 className={styles.title}>Docs</h1>
-      {typeHistory.length >= 0 && (
-        <p onClick={goToPreviousType}>{typeHistory[typeHistory.length - 1]}</p>
-      )}
-      {typeHistory.length == 0 && activeTypeName && (
-        <p onClick={goToPreviousType}>Docs</p>
+    <div className={styles.docs}>
+      <h1 className={`${styles.docsTitle} title-2`}>Docs</h1>
+      {(typeHistory.length > 0 || activeTypeName) && (
+        <button
+          type="button"
+          className={styles.docsBack}
+          onClick={goToPreviousType}
+        >
+          <svg className={styles.docsBackIcon}>
+            <use href={`${icons}#arrow`}></use>
+          </svg>
+          <span className={styles.docsBackText}>
+            {typeHistory.length > 0
+              ? typeHistory[typeHistory.length - 1]
+              : 'Docs'}
+          </span>
+        </button>
       )}
       {activeTypeName ? (
         renderFields()
@@ -224,9 +240,9 @@ const Documentation = (props: { url: string }) => {
         <>
           {queryName && (
             <div>
-              <span className={styles['field-name']}>Query </span>
+              <span className={styles['docsName']}>Query </span>
               <span
-                className={styles['field-type']}
+                className={styles['docsType']}
                 onClick={() => goToType(queryName)}
               >
                 : Query
@@ -235,9 +251,9 @@ const Documentation = (props: { url: string }) => {
           )}
           {mutationName && (
             <div>
-              <span className={styles['field-name']}>Mutation </span>
+              <span className={styles['docsName']}>Mutation </span>
               <span
-                className={styles['field-type']}
+                className={styles['docsType']}
                 onClick={() => goToType(mutationName)}
               >
                 : Mutation

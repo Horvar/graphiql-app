@@ -1,0 +1,76 @@
+@import '../../../variables.scss';
+
+.docs {
+  display: flex;
+  flex-direction: column;
+}
+
+.docsName {
+  color: transparentize($colorWhite, 0.5);
+}
+
+.docsType {
+  cursor: pointer;
+  color: $colorPrimary1;
+
+  transition: 0.1s;
+
+  &:hover {
+    color: $colorPrimary2;
+  }
+}
+
+.docsTitle {
+  text-align: left !important;
+  margin-bottom: 8px !important;
+}
+
+.docsSubtitle {
+  color: #9293a0;
+}
+
+.docsError {
+  color: $colorError;
+}
+
+.docsBack {
+  display: inline-flex;
+  gap: 10px;
+
+  color: $colorPrimary1;
+
+  background: transparent;
+  border: none;
+
+  cursor: pointer;
+
+  margin: 0 auto 24px 0;
+  padding: 0;
+
+  transition: 0.1s;
+
+  &:hover {
+    color: $colorPrimary2;
+
+    .docsBackIcon {
+      background: transparentize($colorPrimary2, 0.9);
+    }
+  }
+}
+
+.docsBackIcon {
+  width: 20px;
+  height: 20px;
+
+  border-radius: 100%;
+  background: transparentize($colorPrimary1, 0.9);
+
+  padding: 4px;
+  margin: -4px;
+
+  transform: scaleX(-1);
+}
+
+.docsBackText {
+  font-size: 16px;
+}

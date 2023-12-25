@@ -1,9 +1,12 @@
+import styles from './GraphiQLPage.module.scss';
+
+import icons from '../../assets/icons/sprite.svg';
+
 import { useState, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/firebase';
 import { useNavigate } from 'react-router-dom';
 import { Docs } from './docs/docs';
-import styles from './GraphiQLPage.module.scss';
 
 function GraphiQLPage() {
   const [user, loading] = useAuthState(auth);
@@ -12,7 +15,7 @@ function GraphiQLPage() {
   const [input, setInput] = useState(``);
   const [variables, setVariables] = useState('');
   const [headers, setHeaders] = useState('');
-  const [output, setOutput] = useState('');
+  const [output, setOutput] = useState({ data: null, error: null });
   const [isDocsOpen, setIsDocsOpen] = useState(false);
   const playgroundPlaceholder = `query Query {
     characters(page: 2, filter: {name: "Morty"}) {
@@ -41,17 +44,17 @@ function GraphiQLPage() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setOutput(JSON.stringify(data, null, 2));
+        setOutput({ data: data, error: null });
       })
       .catch((error) => {
-        console.error('Ошибка запроса:', error);
-        setOutput(`Ошибка: ${error}`);
+        console.error('Request Error:', error);
+        setOutput({ data: null, error: error.message });
       });
   };
 
   const onHandlerQuery = () => {
     makeRequest(input, variables, headers);
-    onPrettifyQuery()
+    onPrettifyQuery();
   };
 
   const handlerChangeApi = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,66 +95,136 @@ function GraphiQLPage() {
   }, [user, loading]);
 
   return (
-    <div className={styles.wrapper}>
-      <h1 className={styles.titleTest}>Страница GraphiQL</h1>
-      <div>
-        <input
-          className={styles.apiInput}
-          type="text"
-          value={api}
-          placeholder="https://rickandmortyapi.com/graphql"
-          onChange={handlerChangeApi}
-        />
-      </div>
+    <section className={styles.playground}>
+      <div className={`${styles.playgroundContainer} container container`}>
+        <h1 className={`${styles.playgroundTitle} title-1`}>
+          GraphiQL Playground
+        </h1>
 
-      <div className={styles.inputOutputWrapper}>
-        <div className={styles.textareaWrapper}>
-          <textarea
-            className={styles.input}
-            name=""
-            id=""
-            cols={20}
-            rows={10}
-            value={input}
-            placeholder={playgroundPlaceholder}
-            onChange={(event) => {
-              setInput(event.target.value);
-            }}
+        <div className={styles.playgroundInputWrapper}>
+          <input
+            className={styles.playgroundInput}
+            type="text"
+            value={api}
+            placeholder="https://rickandmortyapi.com/graphql"
+            onChange={handlerChangeApi}
           />
-          <div className={styles.textareaVariablesAndHeader}>
+          {api && (
+            <button
+              type="button"
+              className={`${styles.playgroundButton} ${
+                styles.playgroundButtonDocs
+              } ${isDocsOpen ? styles.active : ''}`}
+              onClick={() => setIsDocsOpen(!isDocsOpen)}
+            >
+              <svg className={styles.playgroundIcon}>
+                <use href={`${icons}#docs`}></use>
+              </svg>
+            </button>
+          )}
+        </div>
+
+        {isDocsOpen && (
+          <div className={styles.playgroundRow}>
+            <div className={styles.playgroundDocs}>
+              <Docs url={api} />
+            </div>
+          </div>
+        )}
+
+        <div className={styles.playgroundRow}>
+          <div className={styles.playgroundColLeft}>
             <textarea
-              className={styles.variablesInput}
-              cols={5}
-              rows={10}
-              placeholder="QUERY VARIABLES"
-              value={variables}
-              onChange={(event) => setVariables(event.target.value)}
-            />
-            <textarea
-              className={styles.headersInput}
-              cols={5}
-              rows={10}
-              placeholder="HTTP HEADERS"
-              value={headers}
-              onChange={(event) => setHeaders(event.target.value)}
+              className={styles.playgroundTextarea}
+              value={input}
+              placeholder={playgroundPlaceholder}
+              onChange={(event) => {
+                setInput(event.target.value);
+              }}
             />
           </div>
+
+          <div className={styles.playgroundColCenter}>
+            <button
+              type="button"
+              className={styles.playgroundButton}
+              onClick={onHandlerQuery}
+            >
+              <svg className={styles.playgroundIcon}>
+                <use href={`${icons}#play`}></use>
+              </svg>
+            </button>
+          </div>
+
+          <div className={styles.playgroundColRight}>
+            <pre className={styles.playgroundOutput}>
+              {output.error ? (
+                <div
+                  className={styles.playgroundError}
+                >{`Error: ${output.error}`}</div>
+              ) : output.data !== null ? (
+                JSON.stringify(output.data, null, 2)
+              ) : (
+                ''
+              )}
+            </pre>
+          </div>
         </div>
-        <button className={styles.graphButton} onClick={onHandlerQuery}>
-          {'>'}
-        </button>
-        <pre className={styles.output}>{output}</pre>
-        {api && (
-          <button
-            className={styles.docsButton}
-            onClick={() => setIsDocsOpen(!isDocsOpen)}
-          >
-            Docs
-          </button>
-        )}
-        {isDocsOpen && <Docs url={api} />}
+
+        <div className={styles.playgroundRow}>
+          <div className={styles.playgroundColLeft}>
+            <div className={styles.playgroundRow}>
+              <div className={styles.playgroundToggle}>
+                <input
+                  id="checkboxVariables"
+                  type="checkbox"
+                  className={styles.playgroundToggleCheckbox}
+                />
+                <label
+                  htmlFor="checkboxVariables"
+                  className={styles.playgroundToggleLabel}
+                >
+                  <span>Query Variables</span>
+                  <svg className={styles.playgroundToggleIcon}>
+                    <use href={`${icons}#chevron`}></use>
+                  </svg>
+                </label>
+                <textarea
+                  className={styles.playgroundSubEditor}
+                  placeholder="Query Variables"
+                  value={variables}
+                  onChange={(event) => setVariables(event.target.value)}
+                />
+              </div>
+              <div className={styles.playgroundToggle}>
+                <input
+                  id="checkboxHeaders"
+                  type="checkbox"
+                  className={styles.playgroundToggleCheckbox}
+                />
+                <label
+                  htmlFor="checkboxHeaders"
+                  className={styles.playgroundToggleLabel}
+                >
+                  <span>HTTP Headers</span>
+                  <svg className={styles.playgroundToggleIcon}>
+                    <use href={`${icons}#chevron`}></use>
+                  </svg>
+                </label>
+                <textarea
+                  className={styles.playgroundSubEditor}
+                  placeholder="HTTP Headers"
+                  value={headers}
+                  onChange={(event) => setHeaders(event.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+          <div className={styles.playgroundColCenter}></div>
+          <div className={styles.playgroundColRight}></div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
