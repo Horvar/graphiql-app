@@ -92,6 +92,7 @@ function LoginPage() {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
+                aria-label={passwordShown ? 'Hide Password' : 'Show Password'}
                 className={styles.accoutFormReveal}
               >
                 <svg className={styles.accoutFormRevealIcon}>

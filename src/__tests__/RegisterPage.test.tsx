@@ -1,7 +1,17 @@
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
 import * as reactFirebaseHooks from 'react-firebase-hooks/auth';
+import { registerWithEmailAndPassword } from '../firebase/firebase';
+
+jest.mock('../firebase/firebase', () => ({
+  auth: {},
+  registerWithEmailAndPassword: jest.fn(),
+}));
+
+jest.mock('react-firebase-hooks/auth', () => ({
+  useAuthState: jest.fn(),
+}));
 
 const mockNavigate = jest.fn();
 
@@ -10,32 +20,29 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
-jest.mock('react-firebase-hooks/auth', () => ({
-  useAuthState: jest.fn(),
-}));
-
-describe('LoginPage', () => {
+describe('RegisterPage', () => {
   beforeEach(() => {
     mockNavigate.mockReset();
     (reactFirebaseHooks.useAuthState as jest.Mock).mockReturnValue([
-      { uid: 'test-user' },
+      null,
       false,
     ]);
+    (registerWithEmailAndPassword as jest.Mock).mockReset();
   });
 
   it('renders correctly', () => {
     const { getByText } = render(
       <BrowserRouter>
-        <LoginPage />
+        <RegisterPage />
       </BrowserRouter>,
     );
-    expect(getByText('Sign In')).toBeInTheDocument();
+    expect(getByText('Sign Up')).toBeInTheDocument();
   });
 
   it('validates input fields', async () => {
     const { getByText, getByPlaceholderText } = render(
       <BrowserRouter>
-        <LoginPage />
+        <RegisterPage />
       </BrowserRouter>,
     );
 
@@ -45,18 +52,27 @@ describe('LoginPage', () => {
     fireEvent.change(getByPlaceholderText('Enter your Password'), {
       target: { value: '' },
     });
-    fireEvent.click(getByText('Login'));
+    fireEvent.change(getByPlaceholderText('Confirm your Password'), {
+      target: { value: '' },
+    });
+    fireEvent.click(getByText('Register'));
 
     await waitFor(() => {
       expect(getByText('Enter valid email!')).toBeInTheDocument();
       expect(getByText('Enter password!')).toBeInTheDocument();
+      expect(getByText('Passwords must match')).toBeInTheDocument();
     });
   });
 
   it('redirects authenticated user to GraphiQLPage', async () => {
+    (reactFirebaseHooks.useAuthState as jest.Mock).mockReturnValue([
+      { uid: 'test-user' },
+      false,
+    ]);
+
     render(
       <BrowserRouter>
-        <LoginPage />
+        <RegisterPage />
       </BrowserRouter>,
     );
 
@@ -68,7 +84,7 @@ describe('LoginPage', () => {
   it('toggles password visibility', async () => {
     const { getByPlaceholderText, getByLabelText } = render(
       <BrowserRouter>
-        <LoginPage />
+        <RegisterPage />
       </BrowserRouter>,
     );
 

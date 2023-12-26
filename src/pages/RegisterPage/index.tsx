@@ -102,6 +102,7 @@ function RegisterPage() {
               />
               <button
                 type="button"
+                aria-label={passwordShown ? 'Hide Password' : 'Show Password'}
                 onClick={togglePasswordVisibility}
                 className={styles.accoutFormReveal}
               >
