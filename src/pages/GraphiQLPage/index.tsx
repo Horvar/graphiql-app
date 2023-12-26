@@ -112,6 +112,7 @@ function GraphiQLPage() {
           {api && (
             <button
               type="button"
+              aria-label="Documentation"
               className={`${styles.playgroundButton} ${
                 styles.playgroundButtonDocs
               } ${isDocsOpen ? styles.active : ''}`}
@@ -147,6 +148,7 @@ function GraphiQLPage() {
           <div className={styles.playgroundColCenter}>
             <button
               type="button"
+              aria-label="Start"
               className={styles.playgroundButton}
               onClick={onHandlerQuery}
             >
