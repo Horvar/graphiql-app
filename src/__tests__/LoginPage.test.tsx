@@ -122,7 +122,7 @@ describe('LoginPage', () => {
         </BrowserRouter>
       </Provider>,
     );
-  
+
     fireEvent.change(getByTestId('email-input'), {
       target: { value: 'myprojectsecret01@gmail.com' },
     });
@@ -130,7 +130,7 @@ describe('LoginPage', () => {
       target: { value: 'vl8$OQtS^r' },
     });
     fireEvent.click(getByTestId('login-button'));
-  
+
     await waitFor(() => {
       expect(getByText('Login error')).toBeInTheDocument();
     });
@@ -153,27 +153,6 @@ describe('LoginPage', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/graphiql');
   });
 
-  // it('toggles confirm password visibility', async () => {
-  //   const { getByPlaceholderText, getByLabelText } = render(
-  //     <Provider store={store}>
-  //     <BrowserRouter>
-  //       <LoginPage />
-  //     </BrowserRouter>
-  //     </Provider>,
-  //   );
-
-  //   const confirmPasswordInput = getByPlaceholderText(
-  //     'Enter your Password',
-  //   ) as HTMLInputElement;
-  //   const toggleConfirmButton = getByLabelText('Show Password');
-
-  //   fireEvent.click(toggleConfirmButton);
-  //   expect(confirmPasswordInput.type).toBe('text');
-
-  //   fireEvent.click(toggleConfirmButton);
-  //   expect(confirmPasswordInput.type).toBe('password');
-  // });
-
   it('handles null response from logInWithEmailAndPassword', async () => {
     (logInWithEmailAndPassword as jest.Mock).mockResolvedValue(null);
     const { getByTestId, queryByText } = render(
@@ -183,7 +162,7 @@ describe('LoginPage', () => {
         </BrowserRouter>
       </Provider>,
     );
-  
+
     fireEvent.change(getByTestId('email-input'), {
       target: { value: 'myprojectsecret01@gmail.com' },
     });
@@ -191,7 +170,7 @@ describe('LoginPage', () => {
       target: { value: 'vl8$OQtS^r' },
     });
     fireEvent.click(getByTestId('login-button'));
-  
+
     await waitFor(() => {
       expect(
         queryByText('You have entered an incorrect email address or password!'),
