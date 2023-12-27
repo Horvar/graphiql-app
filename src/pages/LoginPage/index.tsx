@@ -88,6 +88,7 @@ function LoginPage() {
                 type="email"
                 {...register('email')}
                 placeholder={translations.signIn.email}
+                data-testid="email-input"
                 className={`${styles.accoutFormInput} ${
                   errors.email ? styles.accoutFormInputError : ''
                 }`}
@@ -104,6 +105,7 @@ function LoginPage() {
                 type={passwordShown ? 'text' : 'password'}
                 {...register('password')}
                 placeholder={translations.signIn.password}
+                data-testid="password-input"
                 className={`${styles.accoutFormInput} ${
                   errors.password ? styles.accoutFormInputError : ''
                 }`}
@@ -111,6 +113,7 @@ function LoginPage() {
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
+                aria-label={passwordShown ? 'Hide Password' : 'Show Password'}
                 className={styles.accoutFormReveal}
               >
                 <svg className={styles.accoutFormRevealIcon}>
@@ -131,11 +134,12 @@ function LoginPage() {
             <input
               type="submit"
               value={translations.signIn.submit}
+              data-testid="login-button"
               className={styles.accoutFormSubmit}
             />
 
             {errorLogin && (
-              <div className={styles.accoutFormError}>{errorLogin}</div>
+              <div className={styles.accoutFormErrorStatic}>{errorLogin}</div>
             )}
 
             <div className={`${styles.accoutFormText} text-common`}>

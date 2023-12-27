@@ -4,8 +4,11 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-    '\\.(gif|ttf|eot|svg)$': 'identity-obj-proxy',
+    '\\.(gif|ttf|eot|svg|jpg|jpeg|png|webp)$': '<rootDir>/__mocks__/fileMock.ts',
   },
+  coveragePathIgnorePatterns: [
+    "src/pages/GraphiQLPage/docs/docs.tsx"
+  ],
   transformIgnorePatterns: ['/node_modules/'],
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
   collectCoverage: false,
@@ -13,10 +16,13 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageThreshold: {
     global: {
-      branches: 50,
-      functions: 50,
-      lines: 50,
-      statements: 50,
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
     },
+  },
+  transform: {
+    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
   },
 };

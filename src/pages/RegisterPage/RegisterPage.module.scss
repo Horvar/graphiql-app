@@ -117,7 +117,8 @@
   }
 }
 
-.accoutFormError {
+.accoutFormError,
+.accoutFormErrorStatic {
   left: 0;
   line-height: 130%;
 
@@ -126,6 +127,10 @@
   @media (max-width: $resS) {
     font-size: 12px;
   }
+}
+
+.accoutFormErrorStatic {
+  position: static;
 }
 
 .accoutFormReveal {

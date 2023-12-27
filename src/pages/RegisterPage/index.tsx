@@ -97,12 +97,16 @@ function RegisterPage() {
                 type="email"
                 {...register('email')}
                 placeholder={translations.signUp.email}
+                data-testid="email-input"
                 className={`${styles.accoutFormInput} ${
                   errors.email ? styles.accoutFormInputError : ''
                 }`}
               />
               {errors.email && (
-                <span className={styles.accoutFormError}>
+                <span
+                  data-testid="error-email"
+                  className={styles.accoutFormError}
+                >
                   {errors.email.message}
                 </span>
               )}
@@ -113,12 +117,15 @@ function RegisterPage() {
                 type={passwordShown ? 'text' : 'password'}
                 {...register('password')}
                 placeholder={translations.signUp.password}
+                data-testid="password-input"
                 className={`${styles.accoutFormInput} ${
                   errors.password ? styles.accoutFormInputError : ''
                 }`}
               />
               <button
                 type="button"
+                aria-label={passwordShown ? 'Hide Password' : 'Show Password'}
+                data-testid="toggle-password-visibility"
                 onClick={togglePasswordVisibility}
                 className={styles.accoutFormReveal}
               >
@@ -131,7 +138,10 @@ function RegisterPage() {
                 </svg>
               </button>
               {errors.password && (
-                <span className={styles.accoutFormError}>
+                <span
+                  data-testid="error-password"
+                  className={styles.accoutFormError}
+                >
                   {errors.password.message}
                 </span>
               )}
@@ -142,6 +152,7 @@ function RegisterPage() {
                 type={confirmPasswordShown ? 'text' : 'password'}
                 {...register('confirm-password')}
                 placeholder={translations.signUp.confirm}
+                data-testid="confirm-password-input"
                 className={`${styles.accoutFormInput} ${
                   errors.password ? styles.accoutFormInputError : ''
                 }`}
@@ -149,6 +160,7 @@ function RegisterPage() {
               <button
                 type="button"
                 onClick={toggleConfirmPasswordVisibility}
+                data-testid="toggle-confirm-password-visibility"
                 className={styles.accoutFormReveal}
               >
                 <svg className={styles.accoutFormRevealIcon}>
@@ -160,7 +172,10 @@ function RegisterPage() {
                 </svg>
               </button>
               {errors['confirm-password'] && (
-                <span className={styles.accoutFormError}>
+                <span
+                  data-testid="error-confirm-password"
+                  className={styles.accoutFormError}
+                >
                   {errors['confirm-password'].message}
                 </span>
               )}
@@ -169,10 +184,15 @@ function RegisterPage() {
             <input
               type="submit"
               value={translations.signUp.submit}
+              data-testid="register-submit-button"
               className={styles.accoutFormSubmit}
             />
 
-            {registerError && <p>{registerError}</p>}
+            {registerError && (
+              <div className={styles.accoutFormErrorStatic}>
+                {registerError}
+              </div>
+            )}
 
             <div className={`${styles.accoutFormText} text-common`}>
               <p>{translations.signUp.hint}</p>

@@ -113,7 +113,9 @@ function GraphiQLPage() {
   return (
     <section className={styles.playground}>
       <div className={`${styles.playgroundContainer} container container`}>
-        <h1 className={styles.titleTest}>{translations.graphQL.title}</h1>
+        <h1 className={`${styles.playgroundTitle} title-1`}>
+          {translations.graphQL.title}
+        </h1>
 
         <div className={styles.playgroundInputWrapper}>
           <input
@@ -126,6 +128,8 @@ function GraphiQLPage() {
           {api && (
             <button
               type="button"
+              aria-label="Documentation"
+              data-testid="docs-button"
               className={`${styles.playgroundButton} ${
                 styles.playgroundButtonDocs
               } ${isDocsOpen ? styles.active : ''}`}
@@ -140,7 +144,7 @@ function GraphiQLPage() {
 
         {isDocsOpen && (
           <div className={styles.playgroundRow}>
-            <div className={styles.playgroundDocs}>
+            <div className={styles.playgroundDocs} data-testid="docs-content">
               <Docs url={api} />
             </div>
           </div>
@@ -161,7 +165,9 @@ function GraphiQLPage() {
           <div className={styles.playgroundColCenter}>
             <button
               type="button"
+              aria-label="Start"
               className={styles.playgroundButton}
+              data-testid="start-button"
               onClick={onHandlerQuery}
             >
               <svg className={styles.playgroundIcon}>
