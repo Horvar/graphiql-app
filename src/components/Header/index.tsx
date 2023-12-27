@@ -190,6 +190,7 @@ function Header() {
                     <li className={styles.headerDropdownItem}>
                       <button
                         type="button"
+                        data-testid="btnLogin"
                         className={styles.headerButtonText}
                         onClick={() => navigate('/login')}
                       >
@@ -199,6 +200,7 @@ function Header() {
                     <li className={styles.headerDropdownItem}>
                       <button
                         type="button"
+                        data-testid="btnRegister"
                         className={styles.headerButtonText}
                         onClick={() => navigate('/register')}
                       >

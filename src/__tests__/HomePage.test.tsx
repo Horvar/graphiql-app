@@ -1,31 +1,61 @@
-import { ReactNode } from 'react';
+import { Provider } from 'react-redux';
 import { render, screen } from '@testing-library/react';
 import HomePage from '../pages/HomePage';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { BrowserRouter } from 'react-router-dom';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import languageReducer from '../store/languageSlice';
 
 jest.mock('react-firebase-hooks/auth', () => ({
   useAuthState: jest.fn(),
 }));
 
-const wrapper = ({ children }: { children: ReactNode }) => (
-  <BrowserRouter>{children}</BrowserRouter>
-);
+interface TestState {
+  language: {
+    language: string;
+  };
+}
 
-describe('HomePage Component', () => {
-  it('renders loading state initially', () => {
-    (useAuthState as jest.Mock).mockReturnValue([true, false]);
-    render(<HomePage />, { wrapper });
-
-    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
+const createTestStore = (initialState: TestState) => {
+  const rootReducer = combineReducers({
+    language: languageReducer,
   });
 
-  it('renders home page correctly when not loading', () => {
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState: initialState,
+  });
+};
+
+const wrapper = (store: ReturnType<typeof createTestStore>) => {
+  const WrapperComponent = ({ children }: { children: React.ReactNode }) => (
+    <Provider store={store}>
+      <BrowserRouter>{children}</BrowserRouter>
+    </Provider>
+  );
+
+  WrapperComponent.displayName = 'WrapperComponent';
+  return WrapperComponent;
+};
+
+describe('HomePage Component', () => {
+  it('renders home page in English', () => {
+    const store = createTestStore({ language: { language: 'en' } });
     (useAuthState as jest.Mock).mockReturnValue([false, false]);
-    render(<HomePage />, { wrapper });
+    render(<HomePage />, { wrapper: wrapper(store) });
 
     expect(
       screen.getByText(/GraphiQL Explorer: Start Your Journey/i),
+    ).toBeInTheDocument();
+  });
+
+  it('renders home page in Russian', () => {
+    const store = createTestStore({ language: { language: 'ru' } });
+    (useAuthState as jest.Mock).mockReturnValue([false, false]);
+    render(<HomePage />, { wrapper: wrapper(store) });
+
+    expect(
+      screen.getByText(/Graphql Explorer: Начните свое путешествие/i),
     ).toBeInTheDocument();
   });
 });

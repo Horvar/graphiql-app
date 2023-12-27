@@ -39,12 +39,6 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
               <div className={`${styles.errorBoundaryText} text-common`}>
                 {this.state.error?.message}
               </div>
-              <button
-                className={styles.errorBoundaryButton}
-                onClick={() => window.location.reload()}
-              >
-                Reload
-              </button>
             </div>
           </section>
         </>

@@ -4,6 +4,9 @@ import Header from '../components/Header';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
+
 import * as firebaseModule from '../firebase/firebase';
 
 jest.mock('react-firebase-hooks/auth', () => ({
@@ -31,9 +34,11 @@ describe('Header Component', () => {
   test('renders Header component', () => {
     mockAuthState.mockReturnValue([null, false]);
     render(
-      <Router>
-        <Header />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
     );
     expect(screen.getByLabelText(/Home Page/i)).toBeInTheDocument();
   });
@@ -41,9 +46,11 @@ describe('Header Component', () => {
   test('renders login and register buttons when not authenticated', () => {
     mockAuthState.mockReturnValue([null, false]);
     render(
-      <Router>
-        <Header />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
     );
 
     fireEvent.click(screen.getByLabelText(/Login\/Register/i));
@@ -55,9 +62,11 @@ describe('Header Component', () => {
   test('renders logout button when authenticated', () => {
     mockAuthState.mockReturnValue([{ uid: '123' }, false]);
     render(
-      <Router>
-        <Header />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
     );
     expect(screen.getByLabelText(/Exit Account/i)).toBeInTheDocument();
   });
@@ -65,9 +74,11 @@ describe('Header Component', () => {
   test('navigates to home on home button click', () => {
     mockAuthState.mockReturnValue([null, false]);
     render(
-      <Router>
-        <Header />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
     );
     fireEvent.click(screen.getByLabelText(/Home Page/i));
     expect(mockedNavigate).toHaveBeenCalledWith('/');
@@ -75,9 +86,11 @@ describe('Header Component', () => {
 
   test('updates isScrolled on window scroll', () => {
     render(
-      <Router>
-        <Header />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
     );
 
     fireEvent.scroll(window, { target: { scrollY: 100 } });
@@ -88,9 +101,11 @@ describe('Header Component', () => {
 
   test('updates isMobile on window resize', () => {
     render(
-      <Router>
-        <Header />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
     );
 
     Object.defineProperty(window, 'innerWidth', {
@@ -106,9 +121,11 @@ describe('Header Component', () => {
 
   test('toggles language and auth dropdowns correctly', () => {
     render(
-      <Router>
-        <Header />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
     );
     fireEvent.click(screen.getByLabelText(/Select Language/i));
     expect(screen.getByText(/Russian/i)).toBeInTheDocument();
@@ -120,9 +137,11 @@ describe('Header Component', () => {
   test('navigates correctly based on auth state', () => {
     mockAuthState.mockReturnValue([null, false]);
     render(
-      <Router>
-        <Header />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
     );
     fireEvent.click(screen.getByLabelText(/Login\/Register/i));
     fireEvent.click(screen.getByText(/Sign In/i));
@@ -133,9 +152,11 @@ describe('Header Component', () => {
     mockAuthState.mockReturnValue([{ uid: '123' }, false]);
 
     render(
-      <Router>
-        <Header />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
     );
 
     const logoutButton = screen.getByLabelText(/Exit Account/i);
@@ -149,9 +170,11 @@ describe('Header Component', () => {
     mockAuthState.mockReturnValue([null, false]);
 
     render(
-      <Router>
-        <Header />
-      </Router>,
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
     );
 
     fireEvent.click(screen.getByLabelText(/Select Language/i));
@@ -164,5 +187,68 @@ describe('Header Component', () => {
 
     expect(screen.queryByText(/Russian/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Sign In/i)).not.toBeInTheDocument();
+  });
+
+  test('toggles language dropdown', () => {
+    render(
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
+    );
+
+    fireEvent.click(screen.getByLabelText(/Select Language/i));
+    expect(screen.getByText(/Russian/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByLabelText(/Select Language/i));
+    expect(screen.queryByText(/Russian/i)).not.toBeInTheDocument();
+  });
+
+  test('toggles auth dropdown', () => {
+    mockAuthState.mockReturnValue([null, false]);
+
+    render(
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
+    );
+
+    fireEvent.click(screen.getByLabelText(/Login\/Register/i));
+    expect(screen.getByText(/Sign In/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByLabelText(/Login\/Register/i));
+    expect(screen.queryByText(/Sign In/i)).not.toBeInTheDocument();
+  });
+
+  test('handles logout', async () => {
+    mockAuthState.mockReturnValue([{ uid: '123' }, false]);
+
+    render(
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
+    );
+
+    fireEvent.click(screen.getByLabelText(/Exit Account/i));
+    expect(firebaseModule.logout).toHaveBeenCalled();
+    expect(mockedNavigate).toHaveBeenCalledWith('/');
+  });
+
+  test('changes language', () => {
+    render(
+      <Provider store={store}>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>,
+    );
+
+    fireEvent.click(screen.getByLabelText(/Select Language/i));
+    fireEvent.click(screen.getByText(/Russian/i));
+    expect(store.getState().language.language).toBe('ru');
+    expect(localStorage.getItem('lang')).toBe('ru');
   });
 });

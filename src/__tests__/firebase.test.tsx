@@ -16,7 +16,7 @@ import {
 jest.mock('firebase/app', () => ({
   FirebaseError: jest.fn(),
   initializeApp: jest.fn().mockReturnValue({
-    /* здесь может быть мок объекта приложения */
+    /* mock application object */
   }),
 }));
 
@@ -38,6 +38,43 @@ describe('Firebase authentication tests', () => {
     jest.clearAllMocks();
   });
 
+  it('handles login error correctly', async () => {
+    const error = new FirebaseError(
+      'auth/invalid-email',
+      'The email address is badly formatted.',
+    );
+    (signInWithEmailAndPassword as jest.Mock).mockRejectedValue(error);
+
+    const expectedErrorMessage = 'Something wrong with login!';
+    await expect(
+      logInWithEmailAndPassword('bademail', 'password'),
+    ).resolves.toEqual(expectedErrorMessage);
+    expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
+      getAuth(),
+      'bademail',
+      'password',
+    );
+  });
+
+  it('handles registration error correctly', async () => {
+    const error = new FirebaseError(
+      'auth/weak-password',
+      'Password should be at least 6 characters',
+    );
+    (createUserWithEmailAndPassword as jest.Mock).mockRejectedValue(error);
+
+    const expectedErrorMessage =
+      'An error occurred during registration. Please try again.';
+    await expect(
+      registerWithEmailAndPassword('user@example.com', '123'),
+    ).resolves.toEqual(expectedErrorMessage);
+    expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(
+      getAuth(),
+      'user@example.com',
+      '123',
+    );
+  });
+
   it('logs in successfully', async () => {
     (signInWithEmailAndPassword as jest.Mock).mockResolvedValue({
       user: { uid: '123' },
@@ -53,10 +90,12 @@ describe('Firebase authentication tests', () => {
     );
   });
 
-  it('handles login errors', async () => {
-    (signInWithEmailAndPassword as jest.Mock).mockRejectedValue(
-      new FirebaseError('auth/invalid-credential', 'Invalid credentials'),
+  it('handles login errors for invalid credentials', async () => {
+    const error = new FirebaseError(
+      'auth/invalid-credential',
+      'Invalid credentials',
     );
+    (signInWithEmailAndPassword as jest.Mock).mockRejectedValue(error);
 
     const errorMessage = 'Something wrong with login!';
     await expect(
@@ -74,10 +113,12 @@ describe('Firebase authentication tests', () => {
     ).resolves.not.toThrow();
   });
 
-  it('handles registration errors', async () => {
-    (createUserWithEmailAndPassword as jest.Mock).mockRejectedValue(
-      new FirebaseError('auth/email-already-in-use', 'This email is busy!'),
+  it('handles registration errors for email already in use', async () => {
+    const error = new FirebaseError(
+      'auth/email-already-in-use',
+      'This email is busy!',
     );
+    (createUserWithEmailAndPassword as jest.Mock).mockRejectedValue(error);
 
     const errorMessage =
       'An error occurred during registration. Please try again.';

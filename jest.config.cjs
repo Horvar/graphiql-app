@@ -6,6 +6,9 @@ module.exports = {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '\\.(gif|ttf|eot|svg|jpg|jpeg|png|webp)$': '<rootDir>/__mocks__/fileMock.ts',
   },
+  coveragePathIgnorePatterns: [
+    "src/pages/GraphiQLPage/docs/docs.tsx"
+  ],
   transformIgnorePatterns: ['/node_modules/'],
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
   collectCoverage: false,

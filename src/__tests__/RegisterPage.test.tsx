@@ -3,6 +3,9 @@ import { BrowserRouter } from 'react-router-dom';
 import RegisterPage from '../pages/RegisterPage';
 import * as reactFirebaseHooks from 'react-firebase-hooks/auth';
 import { registerWithEmailAndPassword } from '../firebase/firebase';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import languageReducer from '../store/languageSlice';
 
 jest.mock('../firebase/firebase', () => ({
   auth: {},
@@ -20,6 +23,12 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
 }));
 
+const store = configureStore({
+  reducer: {
+    language: languageReducer,
+  },
+});
+
 describe('RegisterPage', () => {
   beforeEach(() => {
     mockNavigate.mockReset();
@@ -31,36 +40,44 @@ describe('RegisterPage', () => {
   });
 
   it('renders correctly', () => {
-    const { getByText } = render(
-      <BrowserRouter>
-        <RegisterPage />
-      </BrowserRouter>,
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <RegisterPage />
+        </BrowserRouter>
+      </Provider>,
     );
-    expect(getByText('Sign Up')).toBeInTheDocument();
+
+    // Допустим, у кнопки регистрации есть testid 'register-submit-button'
+    const registerButton = getByTestId('register-submit-button');
+    expect(registerButton).toBeInTheDocument();
   });
 
   it('validates input fields', async () => {
-    const { getByText, getByPlaceholderText } = render(
-      <BrowserRouter>
-        <RegisterPage />
-      </BrowserRouter>,
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <RegisterPage />
+        </BrowserRouter>
+      </Provider>,
     );
 
-    fireEvent.change(getByPlaceholderText('Enter your Email'), {
+    fireEvent.change(getByTestId('email-input'), {
       target: { value: '' },
     });
-    fireEvent.change(getByPlaceholderText('Enter your Password'), {
+    fireEvent.change(getByTestId('password-input'), {
       target: { value: '' },
     });
-    fireEvent.change(getByPlaceholderText('Confirm your Password'), {
+    fireEvent.change(getByTestId('confirm-password-input'), {
       target: { value: '' },
     });
-    fireEvent.click(getByText('Register'));
+
+    fireEvent.click(getByTestId('register-submit-button'));
 
     await waitFor(() => {
-      expect(getByText('Enter valid email!')).toBeInTheDocument();
-      expect(getByText('Enter password!')).toBeInTheDocument();
-      expect(getByText('Passwords must match')).toBeInTheDocument();
+      expect(getByTestId('error-email')).toBeInTheDocument();
+      expect(getByTestId('error-password')).toBeInTheDocument();
+      expect(getByTestId('error-confirm-password')).toBeInTheDocument();
     });
   });
 
@@ -71,9 +88,11 @@ describe('RegisterPage', () => {
     ]);
 
     render(
-      <BrowserRouter>
-        <RegisterPage />
-      </BrowserRouter>,
+      <Provider store={store}>
+        <BrowserRouter>
+          <RegisterPage />
+        </BrowserRouter>
+      </Provider>,
     );
 
     await waitFor(() => {
@@ -82,16 +101,16 @@ describe('RegisterPage', () => {
   });
 
   it('toggles password visibility', async () => {
-    const { getByPlaceholderText, getByLabelText } = render(
-      <BrowserRouter>
-        <RegisterPage />
-      </BrowserRouter>,
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <RegisterPage />
+        </BrowserRouter>
+      </Provider>,
     );
 
-    const passwordInput = getByPlaceholderText(
-      'Enter your Password',
-    ) as HTMLInputElement;
-    const toggleButton = getByLabelText('Show Password');
+    const passwordInput = getByTestId('password-input') as HTMLInputElement;
+    const toggleButton = getByTestId('toggle-password-visibility');
 
     expect(passwordInput.type).toBe('password');
 
@@ -100,5 +119,37 @@ describe('RegisterPage', () => {
 
     fireEvent.click(toggleButton);
     expect(passwordInput.type).toBe('password');
+  });
+
+  it('toggles confirm password visibility', () => {
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <RegisterPage />
+        </BrowserRouter>
+      </Provider>,
+    );
+
+    const confirmPasswordInput = getByTestId(
+      'confirm-password-input',
+    ) as HTMLInputElement; // Приведение типа
+    const toggleVisibilityButton = getByTestId(
+      'toggle-confirm-password-visibility',
+    );
+
+    // Проверяем, что тип поля ввода — password
+    expect(confirmPasswordInput.type).toBe('password');
+
+    // Кликаем на кнопку, чтобы показать пароль
+    fireEvent.click(toggleVisibilityButton);
+
+    // Проверяем, что тип поля ввода изменился на text
+    expect(confirmPasswordInput.type).toBe('text');
+
+    // Снова кликаем на кнопку, чтобы скрыть пароль
+    fireEvent.click(toggleVisibilityButton);
+
+    // Проверяем, что тип поля ввода снова стал password
+    expect(confirmPasswordInput.type).toBe('password');
   });
 });

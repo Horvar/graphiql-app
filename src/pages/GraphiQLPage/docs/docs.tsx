@@ -10,7 +10,7 @@ import {
   ApolloProvider,
 } from '@apollo/client';
 
-const SCHEMA_QUERY = gql`
+export const SCHEMA_QUERY = gql`
   query IntrospectionQuery {
     __schema {
       queryType {
