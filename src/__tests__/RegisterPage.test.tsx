@@ -152,4 +152,97 @@ describe('RegisterPage', () => {
     // Проверяем, что тип поля ввода снова стал password
     expect(confirmPasswordInput.type).toBe('password');
   });
+
+  it('displays an error message when registration fails', async () => {
+    (registerWithEmailAndPassword as jest.Mock).mockResolvedValue(
+      'Registration error',
+    );
+    const { getByTestId, findByText } = render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <RegisterPage />
+        </BrowserRouter>
+      </Provider>,
+    );
+
+    fireEvent.change(getByTestId('email-input'), {
+      target: { value: 'myprojectsecret01@gmail.com' },
+    });
+    fireEvent.change(getByTestId('password-input'), {
+      target: { value: '@>]0efU&sI' },
+    });
+    fireEvent.change(getByTestId('confirm-password-input'), {
+      target: { value: '@>]0efU&sI' },
+    });
+    fireEvent.click(getByTestId('register-submit-button'));
+
+    expect(await findByText('Registration error')).toBeInTheDocument();
+  });
+
+  it('redirects authenticated user to GraphiQLPage immediately', () => {
+    (reactFirebaseHooks.useAuthState as jest.Mock).mockReturnValue([
+      { uid: 'authenticated-user' },
+      false,
+    ]);
+
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <RegisterPage />
+        </BrowserRouter>
+      </Provider>,
+    );
+
+    expect(mockNavigate).toHaveBeenCalledWith('/graphiql');
+  });
+
+  it('toggles confirm password visibility', async () => {
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <RegisterPage />
+        </BrowserRouter>
+      </Provider>,
+    );
+
+    const confirmPasswordInput = getByTestId(
+      'confirm-password-input',
+    ) as HTMLInputElement;
+
+    const toggleConfirmButton = getByTestId(
+      'toggle-confirm-password-visibility',
+    );
+
+    fireEvent.click(toggleConfirmButton);
+    expect(confirmPasswordInput.type).toBe('text');
+
+    fireEvent.click(toggleConfirmButton);
+    expect(confirmPasswordInput.type).toBe('password');
+  });
+
+  it('handles null response from registerWithEmailAndPassword', async () => {
+    (registerWithEmailAndPassword as jest.Mock).mockResolvedValue(null);
+    const { getByTestId, queryByText } = render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <RegisterPage />
+        </BrowserRouter>
+      </Provider>,
+    );
+
+    fireEvent.change(getByTestId('email-input'), {
+      target: { value: 'test@example.com' },
+    });
+    fireEvent.change(getByTestId('password-input'), {
+      target: { value: 'password123' },
+    });
+    fireEvent.change(getByTestId('confirm-password-input'), {
+      target: { value: 'password123' },
+    });
+    fireEvent.click(getByTestId('register-submit-button'));
+
+    await waitFor(() => {
+      expect(queryByText('This email is busy!')).not.toBeInTheDocument();
+    });
+  });
 });

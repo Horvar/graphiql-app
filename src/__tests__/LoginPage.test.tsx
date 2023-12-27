@@ -5,8 +5,20 @@ import * as reactFirebaseHooks from 'react-firebase-hooks/auth';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import languageReducer from '../store/languageSlice';
+import { logInWithEmailAndPassword } from '../firebase/firebase';
 
 const mockNavigate = jest.fn();
+
+const store = configureStore({
+  reducer: {
+    language: languageReducer,
+  },
+});
+
+jest.mock('../firebase/firebase', () => ({
+  auth: {},
+  logInWithEmailAndPassword: jest.fn(),
+}));
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -99,5 +111,91 @@ describe('LoginPage', () => {
 
     fireEvent.click(toggleButton);
     expect(passwordInput.type).toBe('password');
+  });
+
+  it('displays an error message when login fails', async () => {
+    (logInWithEmailAndPassword as jest.Mock).mockResolvedValue('Login error');
+    const { getByTestId, getByText } = render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <LoginPage />
+        </BrowserRouter>
+      </Provider>,
+    );
+  
+    fireEvent.change(getByTestId('email-input'), {
+      target: { value: 'myprojectsecret01@gmail.com' },
+    });
+    fireEvent.change(getByTestId('password-input'), {
+      target: { value: 'vl8$OQtS^r' },
+    });
+    fireEvent.click(getByTestId('login-button'));
+  
+    await waitFor(() => {
+      expect(getByText('Login error')).toBeInTheDocument();
+    });
+  });
+
+  it('redirects authenticated user to GraphiQLPage immediately', () => {
+    (reactFirebaseHooks.useAuthState as jest.Mock).mockReturnValue([
+      { uid: 'authenticated-user' },
+      false,
+    ]);
+
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <LoginPage />
+        </BrowserRouter>
+      </Provider>,
+    );
+
+    expect(mockNavigate).toHaveBeenCalledWith('/graphiql');
+  });
+
+  // it('toggles confirm password visibility', async () => {
+  //   const { getByPlaceholderText, getByLabelText } = render(
+  //     <Provider store={store}>
+  //     <BrowserRouter>
+  //       <LoginPage />
+  //     </BrowserRouter>
+  //     </Provider>,
+  //   );
+
+  //   const confirmPasswordInput = getByPlaceholderText(
+  //     'Enter your Password',
+  //   ) as HTMLInputElement;
+  //   const toggleConfirmButton = getByLabelText('Show Password');
+
+  //   fireEvent.click(toggleConfirmButton);
+  //   expect(confirmPasswordInput.type).toBe('text');
+
+  //   fireEvent.click(toggleConfirmButton);
+  //   expect(confirmPasswordInput.type).toBe('password');
+  // });
+
+  it('handles null response from logInWithEmailAndPassword', async () => {
+    (logInWithEmailAndPassword as jest.Mock).mockResolvedValue(null);
+    const { getByTestId, queryByText } = render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <LoginPage />
+        </BrowserRouter>
+      </Provider>,
+    );
+  
+    fireEvent.change(getByTestId('email-input'), {
+      target: { value: 'myprojectsecret01@gmail.com' },
+    });
+    fireEvent.change(getByTestId('password-input'), {
+      target: { value: 'vl8$OQtS^r' },
+    });
+    fireEvent.click(getByTestId('login-button'));
+  
+    await waitFor(() => {
+      expect(
+        queryByText('You have entered an incorrect email address or password!'),
+      ).not.toBeInTheDocument();
+    });
   });
 });
