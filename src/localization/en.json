@@ -1,0 +1,72 @@
+{
+  "title": "GraphiQL Explorer: Start Your Journey",
+  "about": {
+    "title": "About Project",
+    "content": [
+      "This project is an integral part of the RSSchool curriculum and involves the creation of a comprehensive GraphiQL application. The application boasts a welcoming page that greets users, coupled with a robust user authentication system to ensure secure access.",
+      "The main GraphQL page is the heart of the application, featuring an extensive range of functionalities. Users can benefit from query and variable editors, a header editor, and an on-demand documentation explorer. Additionally, there is a dedicated response section and the capability to switch between different API endpoints with ease.",
+      "The technical foundation of the application is built upon React 18+ and TypeScript. It adheres to strict coding standards that include semantic HTML, client-side validation, and a minimum test coverage of 80%. These measures guarantee a high-quality codebase and a reliable application.",
+      "The design of the application prioritizes interactivity, offering a responsive layout that ensures consistency across various devices and platforms. The final product delivers a user-friendly GraphiQL interface that supports multiple languages, significantly enhancing the user experience for those interacting with GraphQL APIs."
+    ]
+  },
+  "team": {
+    "title": "Our team",
+    "members": {
+      "semyon": {
+        "name": "Semyon Kalashnikov",
+        "position": "Team Leader",
+        "description": "As the team leader, this member was pivotal in fostering team collaboration and setting up the project repository. They were responsible for the visual aspect of the interface and wrote tests for various components, ensuring both aesthetic appeal and functional reliability of the project."
+      },
+      "dimash": {
+        "name": "Dinmukhamed Amirov",
+        "position": "Frontend Developer",
+        "description": "This individual was instrumental in setting up the core aspects of the GraphiQL playground and translating the application. Their efforts ensured a more intuitive and accessible interface, catering to a wider audience and improving user interaction."
+      },
+      "almas": {
+        "name": "Almas Kilichov",
+        "position": "Frontend Developer",
+        "description": "Specialized in Firebase, this member played a crucial role in developing the registration process and redirects. They also contributed significantly to displaying documentation in GraphiQL, enhancing the overall functionality and user experience of the project."
+      }
+    }
+  },
+  "rss": {
+    "title": "RSSchool Course",
+    "content": [
+      "The React Course offered by The Rolling Scopes School (RSSchool) is a free, online program. It is specifically designed for students who have successfully completed RS School Stage #2 or those with practical experience in JavaScript, TypeScript, Git, GitHub, NPM, Webpack, CSS3/HTML5, and a solid understanding of REST.",
+      "The course is inclusive, providing an opportunity for individuals from any professional background or location to learn and enhance their skills. It serves as a platform for personal and professional growth in the field of web development.",
+      "Upon completion, students are awarded an electronic certificate, acknowledging their dedication and the skills they have acquired. The course is set to commence on October 23, 2023. It embodies the school's ethos of Pay it forward, which encourages participants to contribute to the community by sharing their knowledge and becoming mentors to the next generation of students. For additional details or to enroll, interested parties are invited to visit the website"
+    ]
+  },
+  "header": {
+    "graphQL": "Go to GraphiQL!",
+    "language": {
+      "russian": "Russian",
+      "english": "English"
+    },
+    "sign": {
+      "in": "Sign In",
+      "up": "Sign Up"
+    }
+  },
+  "signIn": {
+    "title": "Sign in",
+    "email": "Enter your email",
+    "password": "Enter your password",
+    "submit": "Submit",
+    "hint": "If you're new here and don't have an account yet, please go to",
+    "link": "registration"
+  },
+  "signUp": {
+    "title": "Sign up",
+    "email": "Enter your email",
+    "password": "Enter your password",
+    "confirm": "Confirm your password",
+    "submit": "Submit",
+    "hint": "If you already have an account, please click here to",
+    "link": "sign in"
+  },
+  "graphQL": {
+    "title": "GraphiQL page",
+    "docs": "Docs"
+  }
+}

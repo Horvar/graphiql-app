@@ -7,8 +7,24 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/firebase';
 import { useNavigate } from 'react-router-dom';
 import { Docs } from './docs/docs';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { localizationType } from '../../types/localization';
+import translationsEn from '../../localization/en.json';
+import translationsRu from '../../localization/ru.json';
 
 function GraphiQLPage() {
+  const language = useSelector((state: RootState) => state.language.language);
+
+  useEffect(() => {
+    localStorage.setItem('lang', language);
+  }, [language]);
+
+  const translations =
+    language === 'en'
+      ? (translationsEn as localizationType)
+      : (translationsRu as localizationType);
+
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
   const [api, setApi] = useState('');
@@ -97,9 +113,7 @@ function GraphiQLPage() {
   return (
     <section className={styles.playground}>
       <div className={`${styles.playgroundContainer} container container`}>
-        <h1 className={`${styles.playgroundTitle} title-1`}>
-          GraphiQL Playground
-        </h1>
+        <h1 className={styles.titleTest}>{translations.graphQL.title}</h1>
 
         <div className={styles.playgroundInputWrapper}>
           <input
