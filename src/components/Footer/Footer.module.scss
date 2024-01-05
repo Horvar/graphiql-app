@@ -1,0 +1,172 @@
+@import '../../variables.scss';
+
+.footer {
+  background: $colorBg2;
+
+  padding: 16px 0;
+
+  margin-top: auto;
+
+  overflow: hidden;
+
+  @media (max-width: $resS) {
+    padding: 8px 0;
+  }
+}
+
+.footerContainer {
+  display: flex;
+
+  @media (max-width: $resS) {
+    justify-content: space-between;
+  }
+}
+
+.footerColLeft,
+.footerColCenter,
+.footerColRight {
+  flex: 0 0 calc(100% / 3);
+
+  display: flex;
+  align-items: center;
+}
+
+.footerColLeft {
+  @media (max-width: $resS) {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    margin-left: -16px;
+  }
+}
+
+.footerColCenter {
+  justify-content: center;
+
+  @media (max-width: $resS) {
+    display: none;
+  }
+}
+
+.footerColRight {
+  justify-content: flex-end;
+}
+
+.footerLogo {
+  padding: 32px;
+
+  position: relative;
+  z-index: 0;
+
+  @media (max-width: $resM) {
+    padding: 16px;
+  }
+
+  &:hover {
+    .footerLogoImg {
+      opacity: 0.75;
+    }
+  }
+
+  &::before {
+    content: '';
+
+    width: 100%;
+    height: 400px;
+
+    background: $colorWhite;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
+}
+
+.footerLogoImg {
+  width: 1272px * 0.4;
+  width: 472px * 0.4;
+
+  transition: 0.1s;
+
+  @media (max-width: $resM) {
+    width: 1272px * 0.3;
+    width: 472px * 0.3;
+  }
+}
+
+.footerText {
+  color: $colorWhite;
+
+  font-weight: 300;
+
+  opacity: 0.5;
+}
+
+.footerTextMobile {
+  padding-left: 16px;
+  font-weight: 500;
+
+  color: $colorBlack;
+
+  opacity: 0.5;
+
+  position: relative;
+
+  @media (min-width: ($resS + 1px)) {
+    display: none;
+  }
+}
+
+.footerLinkList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  list-style: none;
+
+  margin: 0;
+  padding: 0;
+}
+
+.footerLinkItem {
+}
+
+.footerLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-weight: 400;
+  text-decoration: none;
+
+  color: $colorPrimary1;
+  background: transparentize($colorPrimary1, 0.9);
+
+  padding: 4px 12px 4px 8px;
+  border-radius: 100px;
+
+  transition: 0.1s;
+
+  &:hover {
+    color: $colorPrimary2;
+    background: transparentize($colorPrimary2, 0.9);
+  }
+}
+
+.footerLinkIcon {
+  width: 32px;
+  height: 32px;
+
+  opacity: 0.8;
+
+  @media (max-width: $resS) {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.footerLinkText {
+}

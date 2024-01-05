@@ -1,0 +1,379 @@
+@import '../../variables.scss';
+
+.playground {
+}
+
+.playgroundContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.playgroundTitle {
+}
+
+.playgroundInput {
+  max-width: 100%;
+  width: 540px;
+  height: 48px;
+
+  border-radius: 100px;
+
+  font: inherit;
+  text-align: center;
+  color: $colorWhite;
+
+  padding: 0 16px;
+  box-sizing: border-box;
+
+  background: $colorBg1;
+  border: 1px solid transparentize($colorPrimary1, 0);
+
+  font-weight: 400;
+
+  margin: 0;
+
+  @media (max-width: $resM) {
+    width: 100%;
+    height: 40px;
+  }
+
+  &::placeholder {
+    color: transparentize($colorPrimary1, 0.5);
+  }
+
+  &:focus {
+    outline: none;
+
+    border-color: $colorPrimary2;
+  }
+}
+
+.playgroundRow {
+  display: flex;
+  gap: 16px;
+
+  &:not(:last-of-type) {
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: $resM) {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.playgroundColLeft,
+.playgroundColRight {
+  flex: 0 1 50%;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  @media (max-width: $resM) {
+    flex: 1 1 auto;
+  }
+}
+
+.playgroundColLeft {
+}
+
+.playgroundColCenter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  flex: 1 1 48px;
+
+  @media (max-width: $resM) {
+    flex-direction: row;
+    justify-content: center;
+    flex: 1 1 auto;
+  }
+}
+
+.playgroundColRight {
+}
+
+.playgroundButton {
+  min-width: 48px;
+  width: 48px;
+  height: 48px;
+
+  background: transparentize($colorPrimary1, 0.9);
+  border: none;
+
+  padding: 0;
+  border-radius: 50%;
+
+  color: $colorPrimary1;
+
+  transition: 0.1s;
+
+  cursor: pointer;
+
+  @media (max-width: $resM) {
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+  }
+
+  &:hover,
+  &.active {
+    background: transparentize($colorPrimary2, 0.9);
+
+    color: $colorPrimary2;
+  }
+}
+
+.playgroundButtonDocs {
+  @media (min-width: ($resM + 1px)) {
+    position: absolute;
+    top: 0;
+    right: -16px;
+    transform: translateX(100%);
+  }
+}
+
+.playgroundIcon {
+  width: 32px;
+  height: 32px;
+
+  position: relative;
+}
+
+.playgroundTextarea,
+.playgroundOutput,
+.playgroundSubEditor,
+.playgroundDocs {
+  resize: vertical;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $colorBg2;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparentize($colorWhite, 0.5);
+    border: 2px solid $colorBg2;
+    border-radius: 10px;
+    transition: 0.1s;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: transparentize($colorWhite, 0);
+  }
+
+  &::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+}
+
+.playgroundTextarea,
+.playgroundOutput {
+  height: 420px;
+}
+
+.playgroundTextarea,
+.playgroundOutput,
+.playgroundDocs {
+  display: flex;
+
+  width: 100%;
+
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  font-weight: 300;
+  color: $colorWhite;
+
+  overflow: scroll;
+
+  margin: 0;
+
+  padding: 16px;
+  box-sizing: border-box;
+
+  background: transparent;
+
+  @media (max-width: $resM) {
+    height: 280px;
+  }
+
+  @media (max-width: $resS) {
+    height: 240px;
+  }
+}
+
+.playgroundTextarea {
+  border: 1px solid transparentize($colorPrimary1, 0);
+
+  &::placeholder {
+    color: transparentize($colorPrimary1, 0.5);
+  }
+
+  &:focus {
+    outline: none;
+
+    border-color: $colorPrimary2;
+  }
+}
+
+.playgroundOutput,
+.playgroundDocs {
+  border: 1px solid transparentize($colorWhite, 0.5);
+}
+
+.playgroundError {
+  color: $colorError;
+}
+
+.playgroundToggle {
+  flex: 0 1 50%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &:not(:last-of-type) {
+    @media (max-width: $resM) {
+      margin-bottom: 8px;
+    }
+  }
+}
+
+.playgroundToggleLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 100%;
+  height: 48px;
+
+  border-radius: 100px;
+
+  border: none;
+  background: transparentize($colorPrimary1, 0.9);
+
+  font: inherit;
+  font-size: 18px;
+  font-weight: 400;
+  color: $colorPrimary1;
+
+  cursor: pointer;
+
+  transition: 0.1s;
+
+  @media (max-width: $resL) {
+    font-size: 16px;
+  }
+
+  @media (max-width: $resM) {
+    font-size: 18px;
+  }
+
+  &:hover {
+    background: transparentize($colorPrimary2, 0.9);
+    color: $colorPrimary2;
+  }
+}
+
+.playgroundToggleCheckbox {
+  display: none;
+
+  &:checked {
+    & ~ .playgroundToggleLabel {
+      background: transparentize($colorPrimary2, 0.9);
+      color: $colorPrimary2;
+
+      .playgroundToggleIcon {
+        transform: rotate(180deg);
+      }
+    }
+
+    & ~ .playgroundSubEditor {
+      transition: opacity 0.5s;
+    }
+  }
+
+  &:not(:checked) {
+    & ~ .playgroundSubEditor {
+      opacity: 0;
+      height: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  }
+}
+
+.playgroundToggleIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.playgroundSubEditor {
+  display: flex;
+
+  width: 100%;
+  height: 200px;
+
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  font-weight: 300;
+  color: $colorWhite;
+
+  background: transparent;
+
+  overflow: scroll;
+
+  margin: 0;
+
+  border: 1px solid transparentize($colorPrimary1, 0);
+  padding: 16px;
+  box-sizing: border-box;
+
+  @media (max-width: $resM) {
+    height: 160px;
+  }
+
+  &::placeholder {
+    color: transparentize($colorPrimary1, 0.5);
+  }
+
+  &:focus {
+    outline: none;
+
+    border-color: $colorPrimary2;
+  }
+}
+
+.playgroundDocs {
+  height: 200px;
+
+  @media (max-width: $resM) {
+    height: 160px;
+  }
+}
+
+.playgroundInputWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  margin: 0 auto 32px;
+
+  position: relative;
+
+  @media (max-width: $resM) {
+    width: 100%;
+    gap: 8px;
+  }
+}
