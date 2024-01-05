@@ -101,8 +101,12 @@ function GraphiQLPage() {
   }
 
   const onPrettifyQuery = (): void => {
-    const prettified = prettifyQuery(input);
-    setInput(prettified);
+    const prettifiedQuery = prettifyQuery(input);
+    const prettifiedHeaders = prettifyQuery(headers);
+    const prettifiedVariables = prettifyQuery(variables);
+    setInput(prettifiedQuery);
+    setHeaders(prettifiedHeaders);
+    setVariables(prettifiedVariables);
   };
 
   useEffect(() => {
